@@ -2,58 +2,89 @@ package org.example;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
-import org.example.dao.ClientDAO;
-import org.example.dao.EmployeeDAO;
-import org.example.dao.ProductDAO;
-import org.example.dao.SupplierDAO;
-import org.example.model.entities.Employee;
+
+import org.example.DAO.UserAppDAO;
 import org.example.model.entities.Product;
-import org.example.model.entities.WareHouse;
+import org.example.model.entities.UserApp;
 import org.example.persistence.CustomPersistenceUnitInfo;
+
+
+import org.example.service.ServiceUserApp;
+import org.example.view.login_register.MainLoginRegister;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 
+import java.awt.*;
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
+
+
+// if turn off frame -> set dispose for frame
+
         String puName = "my-persistence-unit";
 
         Map<String, String> props = new HashMap<>();
 
         props.put("hibernate.show_sql" , "true");
-        props.put("hibernate.hbm2ddl.auto", "");
+        props.put("hibernate.hbm2ddl.auto", "update");
 
-        EntityManagerFactory emf = new HibernatePersistenceProvider()
-                .createContainerEntityManagerFactory(new CustomPersistenceUnitInfo(puName), props);
+        EntityManagerFactory emf = new HibernatePersistenceProvider().createContainerEntityManagerFactory(
+                new CustomPersistenceUnitInfo(puName), props);
 
         EntityManager em = emf.createEntityManager();
-        try {
-            em.getTransaction().begin();
-                CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-                CriteriaQuery<WareHouse> criteriaQuery = criteriaBuilder.createQuery(WareHouse.class);
-                Root<WareHouse> root = criteriaQuery.from(WareHouse.class);
-                criteriaQuery.select(root);
-                TypedQuery<WareHouse> query = em.createQuery(criteriaQuery);
-                query.getResultList().forEach(System.out::println);
+        System.out.println(em);
 
-            List<Employee> e = new EmployeeDAO(em).selectAll();
-            e.forEach(System.out::println);
-            // test client
-            new ClientDAO(em).selectAll().forEach(System.out::println);
-            // test product
-            new ProductDAO(em).selectAll().forEach(System.out::println);
-           // test
-            new SupplierDAO(em).selectAll().forEach(System.out::println);
+       //MainLoginRegister a = new MainLoginRegister(em);
+       //a.setVisible(true);
+        // check service
 
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
+//        ServiceUserApp app = new ServiceUserApp(em);
+//        boolean check = app.checkDuplicateEmail("tesr324");
+//        System.out.print(check);
+//       try {
+//          em.getTransaction().begin();
+//             //test email
+//           UserAppDAO testEmail = new UserAppDAO(em);
+//           System.out.println(testEmail.findUserEmail("tesrsdf").size());
+
+
+           //
+//
+//          // test query login
+//           UserAppDAO testLogin = new UserAppDAO(em);
+//           System.out.print(testLogin.findLoginRegister("123","1244").getIdUser());
+
+
+//            List<Product> test = new UserAppDAO(em).findAllProduct();
+           //UserApp userApp = new UserApp("tesr", "teset123", "dfsees");
+           //em.getTransaction().begin();
+           //em.persist(userApp);
+           //em.getTransaction().commit();
+
+//            // no para
+////            String jpql = "SELECT u FROM UserApp u";
+////            TypedQuery<UserApp> query = em.createQuery(jpql, UserApp.class);
+////            query.getResultList().forEach(System.out::println);
+//
+//            // para
+//            String jpql2 = "SELECT u FROM UserApp u WHERE u.email = :email";
+//
+//            TypedQuery<UserApp> query = em.createQuery(jpql2, UserApp.class);
+//            query.setParameter("email", "%com%");
+//
+//            String jpql3 = "Insert into UserApp (email, name) values (:email, :name)";
+//            query.setParameter("email", "%com%");
+//            query.executeUpdate();
+
+//
+//            em.getTransaction().commit();
+//       } finally {
+//            em.close();
+//        }
+
     }
 }

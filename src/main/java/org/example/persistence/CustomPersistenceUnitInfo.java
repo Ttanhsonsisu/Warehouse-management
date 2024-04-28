@@ -67,13 +67,15 @@ public class CustomPersistenceUnitInfo implements PersistenceUnitInfo {
     @Override
     public List<String> getManagedClassNames() {
         return List.of(
-                "org.example.model.entities.Client",
+            "org.example.model.entities.Client",
                 "org.example.model.entities.Product",
                 "org.example.model.entities.Supplier",
+                "org.example.model.entities.UserApp",
                 "org.example.model.entities.WareHouse",
                 "org.example.model.entities.Employee",
                 "org.example.model.entities.ExportNote",
                 "org.example.model.entities.ImportNote"
+
         );
     }
 

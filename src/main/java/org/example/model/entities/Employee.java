@@ -3,38 +3,19 @@ package org.example.model.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.example.model.entities.abstractEntity.UserAbstract;
 import org.example.model.entities.enums.Deparment;
 import org.example.model.entities.interfacies.ActiveWithItem;
 
 @Entity
 @Data
-public class Employee extends UserAbstract implements ActiveWithItem {
+public class Employee extends UserApp implements ActiveWithItem {
 
-    @Id
-    @GeneratedValue
-    private Integer idEmployee;
 
-    private String nameEmployee;
     @Enumerated
     @Column(length = 500)
     private Deparment deparment;
 
 
-    @Override
-    public void login() {
-
-    }
-
-    @Override
-    public void register() {
-
-    }
-
-    @Override
-    public void displayItem() {
-
-    }
 
     @Override
     public void addItem(Product product) {

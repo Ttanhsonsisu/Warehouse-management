@@ -14,11 +14,10 @@ public class ImportNote extends ProductTransactionAbstract {
 
     @Id
     @GeneratedValue
-    private Integer idExportNote;
+    private Integer idImportNote;
 
     @ManyToOne
-    private Supplier suppiers;
-
+    private UserApp suppiers;
 
 
 }

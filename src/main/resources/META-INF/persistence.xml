@@ -16,8 +16,7 @@
 
             <!--url connect to postgresql            -->
             <!--            <property name="jakarte.persistence.jdbc.url" value="jdbc:postgres://localhost:5432/demo_test"/>-->
-            <property name="show_sql" value="true"/>
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
+
             
         </properties>
     </persistence-unit>

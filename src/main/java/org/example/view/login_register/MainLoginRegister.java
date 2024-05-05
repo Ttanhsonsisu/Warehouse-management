@@ -5,10 +5,7 @@ import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import com.formdev.flatlaf.util.UIScale;
 import jakarta.persistence.EntityManager;
-import org.example.model.entities.UserApp;
 import org.example.view.login_register.forms.Home;
-
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -33,7 +30,7 @@ public class MainLoginRegister extends JFrame {
         //setIconImage(new ImageIcon("videos/waseHouse.jpg").getImage());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setUndecorated(false);
-        setSize(UIScale.scale(new Dimension(1365, 700)));
+        setSize(UIScale.scale(new Dimension(1170, 600)));
         setLocationRelativeTo(null);
         home = new Home(em);
         setContentPane(home);

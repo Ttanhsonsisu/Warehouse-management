@@ -62,7 +62,7 @@ public class Home extends JPanel {
 
         locations.add(new ModelLocation("title\nResort",
                 "ntesst3",
-                "videos/video1.mp4"));
+                "videos/video11.mp4"));
 
     }
 

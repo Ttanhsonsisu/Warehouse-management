@@ -15,19 +15,20 @@
     </properties>
 
     <dependencies>
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>6.2.5.Final</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.7.3</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -47,7 +48,7 @@
             <artifactId>vlcj</artifactId>
             <version>4.8.2</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.miglayout/miglayout-swing -->
+
         <dependency>
             <groupId>com.miglayout</groupId>
             <artifactId>miglayout-swing</artifactId>
@@ -71,6 +72,30 @@
             <artifactId>flatlaf-fonts-roboto</artifactId>
             <version>2.137</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.weisj/jsvg -->
+        <dependency>
+            <groupId>com.github.weisj</groupId>
+            <artifactId>jsvg</artifactId>
+            <version>1.2.0</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/net.java.dev.timingframework/timingframework -->
+        <dependency>
+            <groupId>net.java.dev.timingframework</groupId>
+            <artifactId>timingframework</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.formdev/svgSalamander -->
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>svgSalamander</artifactId>
+            <version>1.1.4</version>
+            <scope>runtime</scope>
+        </dependency>
+
+
+
     </dependencies>
 
 </project>

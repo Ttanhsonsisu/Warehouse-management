@@ -6,10 +6,9 @@ import com.formdev.flatlaf.util.CubicBezierEasing;
 import jakarta.persistence.EntityManager;
 import net.miginfocom.swing.MigLayout;
 import org.example.controller.RegisterController;
-import org.example.model.entities.UserApp;
+
 import org.example.view.login_register.components.EventHomeOverlay;
 import org.example.view.login_register.components.HeaderButton;
-
 
 import javax.swing.*;
 import java.awt.*;

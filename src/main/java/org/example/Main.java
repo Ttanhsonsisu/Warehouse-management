@@ -3,20 +3,16 @@ package org.example;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
-import org.example.DAO.UserAppDAO;
-import org.example.model.entities.Product;
-import org.example.model.entities.UserApp;
 import org.example.persistence.CustomPersistenceUnitInfo;
 
 
-import org.example.service.ServiceUserApp;
 import org.example.view.login_register.MainLoginRegister;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 
-import java.awt.*;
+
 import java.util.HashMap;
 
-import java.util.List;
+
 import java.util.Map;
 
 public class Main {
@@ -38,8 +34,8 @@ public class Main {
         EntityManager em = emf.createEntityManager();
         System.out.println(em);
 
-       //MainLoginRegister a = new MainLoginRegister(em);
-       //a.setVisible(true);
+       MainLoginRegister a = new MainLoginRegister(em);
+       a.setVisible(true);
         // check service
 
 //        ServiceUserApp app = new ServiceUserApp(em);

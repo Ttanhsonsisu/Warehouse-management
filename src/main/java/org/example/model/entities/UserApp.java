@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.model.entities.enums.UserRole;
 
 @Getter
 @Setter
@@ -28,6 +29,10 @@ public class UserApp {
 
     protected String verifyCode;
 
+    protected String name;
+
+    @Enumerated(EnumType.STRING)
+    protected UserRole role;
     public UserApp(Integer idUser, String email, String userName, String password, String verifyCode) {
         this.idUser = idUser;
         this.email = email;

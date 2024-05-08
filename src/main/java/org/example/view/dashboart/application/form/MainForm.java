@@ -7,6 +7,7 @@ import org.example.view.dashboart.application.Application;
 import org.example.view.dashboart.application.form.other.FormDashboard;
 import org.example.view.dashboart.application.form.other.FormInbox;
 import org.example.view.dashboart.application.form.other.FormRead;
+import org.example.view.dashboart.application.form.other.UserInfo;
 import org.example.view.dashboart.menu.Menu;
 import org.example.view.dashboart.menu.MenuAction;
 
@@ -71,14 +72,10 @@ public class MainForm extends JLayeredPane {
             if (index == 0) {
                 Application.showForm(new FormDashboard());
             } else if (index == 1) {
-                if (subIndex == 1) {
-                    Application.showForm(new FormInbox());
-                } else if (subIndex == 2) {
-                    Application.showForm(new FormRead());
-                } else {
-                    action.cancel();
-                }
-            } else if (index == 9) {
+
+                    Application.showForm(new UserInfo());
+
+            } else if (index == 2) {
                 Application.logout();
             } else {
                 action.cancel();

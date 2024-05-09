@@ -10,6 +10,7 @@ import java.awt.Font;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import jakarta.persistence.EntityManager;
 import org.example.view.dashboart.application.form.LoginForm;
 import org.example.view.dashboart.application.form.MainForm;
 import raven.toast.Notifications;
@@ -19,12 +20,18 @@ public class Application extends javax.swing.JFrame {
     private static Application app;
     private final MainForm mainForm;
     private final LoginForm loginForm;
+    private final EntityManager em;
 
-    public Application() {
+    public Application(EntityManager em) {
+        this.em = em;
+        FlatRobotoFont.install();
+        FlatLaf.registerCustomDefaultsSource("theme");
+        UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
+        FlatMacDarkLaf.setup();
         initComponents();
         setSize(new Dimension(1366, 768));
         setLocationRelativeTo(null);
-        mainForm = new MainForm();
+        mainForm = new MainForm(em);
         loginForm = new LoginForm();
         setContentPane(loginForm);
         Notifications.getInstance().setJFrame(this);
@@ -78,13 +85,13 @@ public class Application extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public static void main(String args[]) {
+    public static void initForm(EntityManager entityManager) {
         FlatRobotoFont.install();
         FlatLaf.registerCustomDefaultsSource("theme");
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
         FlatMacDarkLaf.setup();
         java.awt.EventQueue.invokeLater(() -> {
-            app = new Application();
+            app = new Application(entityManager);
             //  app.applyComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
             app.setVisible(true);
         });

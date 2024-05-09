@@ -3,8 +3,9 @@ package org.example.service;
 import jakarta.persistence.EntityManager;
 import org.example.DAO.UserAppDAO;
 import org.example.model.entities.UserApp;
-
 import java.util.List;
+
+
 
 public class ServiceUserApp {
 
@@ -14,6 +15,14 @@ public class ServiceUserApp {
         this.em = em;
     }
 
+    public List<UserApp> listUserApp(){
+        em.getTransaction().begin();
+        UserAppDAO dao = new UserAppDAO(em);
+        List<UserApp> result = dao.findAllUserApp();
+        em.getTransaction().commit();
+
+        return result;
+    }
     public void insertUser(UserApp userApp) {
         em.getTransaction().begin();
         UserAppDAO userDao = new UserAppDAO(em);
@@ -40,5 +49,12 @@ public class ServiceUserApp {
         }
 
         return checkDuplicate;
+    }
+
+    public void delUserAppById(Integer Id) {
+        em.getTransaction().begin();
+        UserAppDAO userDao = new UserAppDAO(em);
+        // find userApp by id
+
     }
 }

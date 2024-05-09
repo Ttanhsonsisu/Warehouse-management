@@ -1,6 +1,6 @@
 package org.example.DAO;
 
-import com.sun.jna.platform.win32.Netapi32Util;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -15,7 +15,7 @@ import java.util.List;
 public class UserAppDAO {
 
     private final EntityManager  em;
-
+// criteria java hibernate
     public UserAppDAO(EntityManager em) {
         this.em = em;
     }
@@ -27,6 +27,7 @@ public class UserAppDAO {
         cq.select(root);
         return em.createQuery(cq).getResultList();
     }
+
 
     public List<Product> findAllProduct() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -81,5 +82,15 @@ public class UserAppDAO {
 
 
         return query.getResultList();
+    }
+
+    public UserApp findUserById(Integer Id) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<UserApp> cq = cb.createQuery(UserApp.class);
+        Root<UserApp> root = cq.from(UserApp.class);
+        Predicate userIDPred = cb.like(root.get("idUser"), Id.toString());
+        cq.where(userIDPred);
+        TypedQuery<UserApp> query = em.createQuery(cq);
+        return query.getSingleResult();
     }
 }

@@ -3,9 +3,12 @@ package org.example;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
+import org.example.model.entities.UserApp;
 import org.example.persistence.CustomPersistenceUnitInfo;
 
 
+import org.example.service.ServiceUserApp;
+import org.example.view.dashboart.application.Application;
 import org.example.view.login_register.MainLoginRegister;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 
@@ -13,9 +16,11 @@ import org.hibernate.jpa.HibernatePersistenceProvider;
 import java.util.HashMap;
 
 
+import java.util.List;
 import java.util.Map;
 
 public class Main {
+
     public static void main(String[] args) {
 
 
@@ -34,10 +39,17 @@ public class Main {
         EntityManager em = emf.createEntityManager();
         System.out.println(em);
 
-       MainLoginRegister a = new MainLoginRegister(em);
-       a.setVisible(true);
+//       MainLoginRegister a = new MainLoginRegister(em);
+//       a.setVisible(true);
         // check service
+        //Application testApp = new Application(em);
+        Application.initForm(em);
 
+        ServiceUserApp findAll = new ServiceUserApp(em);
+        List<UserApp> r =findAll.listUserApp();
+        for (UserApp u : r) {
+            System.out.println(u.toString());
+        }
 //        ServiceUserApp app = new ServiceUserApp(em);
 //        boolean check = app.checkDuplicateEmail("tesr324");
 //        System.out.print(check);

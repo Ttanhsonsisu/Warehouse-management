@@ -2,6 +2,8 @@ package org.example.view.dashboart.application.form.other;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import jakarta.persistence.EntityManager;
+import org.example.controller.UserInfoController;
 import org.example.view.dashboart.application.form.AddUser;
 import org.example.view.dashboart.application.form.UpdateUser;
 
@@ -17,64 +19,21 @@ import java.util.Random;
 
 public class UserInfo extends javax.swing.JPanel {
 
-    public UserInfo() {
+    private UserInfoController userInfoController;
+
+    private final EntityManager em;
+    public UserInfo(EntityManager em) {
+        this.em = em;
         initComponents();
         applyTableStyle(jTable1);
-        testData(jTable1);
+        addDataTbl(jTable1);
     }
+        private void addDataTbl(JTable table) {
+            userInfoController = new UserInfoController(em);
+            userInfoController.ShowDataTbl(table);
+        }
 
-        private void testData(JTable table) {
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.addRow(getRandomRow("Beer"));
-        model.addRow(getRandomRow("Shirt"));
-        model.addRow(getRandomRow("Laptop"));
-        model.addRow(getRandomRow("Book"));
-        model.addRow(getRandomRow("Coffee"));
-        model.addRow(getRandomRow("Phone"));
-        model.addRow(getRandomRow("Chair"));
-        model.addRow(getRandomRow("Watch"));
-        model.addRow(getRandomRow("Sunglasses"));
-        model.addRow(getRandomRow("Bag"));
-        model.addRow(getRandomRow("Headphones"));
-        model.addRow(getRandomRow("Camera"));
-        model.addRow(getRandomRow("Necklace"));
-        model.addRow(getRandomRow("Perfume"));
-        model.addRow(getRandomRow("Wallet"));
-        model.addRow(getRandomRow("Jacket"));
-        model.addRow(getRandomRow("Bicycle"));
-        model.addRow(getRandomRow("Game console"));
-        model.addRow(getRandomRow("Tennis racket"));
-                model.addRow(getRandomRow("Beer"));
-        model.addRow(getRandomRow("Shirt"));
-        model.addRow(getRandomRow("Laptop"));
-        model.addRow(getRandomRow("Book"));
-        model.addRow(getRandomRow("Coffee"));
-        model.addRow(getRandomRow("Phone"));
-        model.addRow(getRandomRow("Chair"));
-        model.addRow(getRandomRow("Watch"));
-        model.addRow(getRandomRow("Sunglasses"));
-        model.addRow(getRandomRow("Bag"));
-        model.addRow(getRandomRow("Headphones"));
-        model.addRow(getRandomRow("Camera"));
-        model.addRow(getRandomRow("Necklace"));
-        model.addRow(getRandomRow("Perfume"));
-        model.addRow(getRandomRow("Wallet"));
-        model.addRow(getRandomRow("Jacket"));
-        model.addRow(getRandomRow("Bicycle"));
-        model.addRow(getRandomRow("Game console"));
-        model.addRow(getRandomRow("Tennis racket"));
-    }
-        
-    private Object[] getRandomRow(String name) {
-        DecimalFormat df = new DecimalFormat("#,##0.##");
-        return new Object[]{false, name, "$" + df.format(getAmount(9999, 9999999)), "$" + df.format(getAmount(9999, 9999999)), df.format(getAmount(-100, 100))};
-    }
-    
-       private double getAmount(int from, int to) {
-        Random ran = new Random();
-        return (ran.nextInt(to - from) + from) * ran.nextDouble();
-    }
-       
+
      private void applyTableStyle(JTable table) {
          cmdAdd.setIcon(new FlatSVGIcon("icon/svg/add.svg", 0.35f));
          cmdUpdate.setIcon(new FlatSVGIcon("icon/svg/edit.svg", 0.35f));
@@ -111,22 +70,22 @@ public class UserInfo extends javax.swing.JPanel {
                         label.setHorizontalAlignment(SwingConstants.LEADING);
                     }
                     // 
-                    if (header == false) {
-                        if (column == 4) {
-                            if (Double.parseDouble(value.toString()) > 0) {
-                                com.setForeground(new Color(17, 182, 60));
-                                label.setText("+" + value);
-                            } else {
-                                com.setForeground(new Color(202, 48, 48));
-                            }
-                        } else {
-                            if (isSelected) {
-                                com.setForeground(table.getSelectionForeground());
-                            } else {
-                                com.setForeground(table.getForeground());
-                            }
-                        }
-                    }
+//                    if (header == false) {
+//                        if (column == 4) {
+//                            if (Double.parseDouble(value.toString()) > 0) {
+//                                com.setForeground(new Color(17, 182, 60));
+//                                label.setText("+" + value);
+//                            } else {
+//                                com.setForeground(new Color(202, 48, 48));
+//                            }
+//                        } else {
+//                            if (isSelected) {
+//                                com.setForeground(table.getSelectionForeground());
+//                            } else {
+//                                com.setForeground(table.getForeground());
+//                            }
+//                        }
+//                    }
                 }
                 return com;
             }
@@ -246,12 +205,12 @@ public class UserInfo extends javax.swing.JPanel {
         
         if(!showFrameAdd) {
             showFrameAdd = true;
-            addUserFrame = new AddUser();
+            addUserFrame = new AddUser(em);
             addUserFrame.setVisible(true);
             
         } else {
         addUserFrame.dispose();
-        addUserFrame = new AddUser();
+        addUserFrame = new AddUser(em);
         addUserFrame.setVisible(true);
         }
     }//GEN-LAST:event_cmdAddActionPerformed
@@ -261,12 +220,12 @@ public class UserInfo extends javax.swing.JPanel {
         
         if(!showFrameUpdate) {
             showFrameUpdate = true;
-            updateUserFrame = new UpdateUser();
+            updateUserFrame = new UpdateUser(em);
             updateUserFrame.setVisible(true);
            
         } else {
         updateUserFrame.dispose();
-        updateUserFrame = new UpdateUser();
+        updateUserFrame = new UpdateUser(em);
         updateUserFrame.setVisible(true);
         }
     }//GEN-LAST:event_cmdUpdateActionPerformed

@@ -34,7 +34,7 @@ public class RegisterForm extends JPanel {
         });
 
         setLayout(new MigLayout("wrap,fillx,insets 45 45 50 45", "[fill]"));
-        JLabel title = new JLabel("Login to your account", SwingConstants.CENTER);
+        JLabel title = new JLabel("Sign up account", SwingConstants.CENTER);
         JTextField txtUsername = new JTextField();
         JTextField txtEmail = new JTextField();
         JPasswordField txtPassword = new JPasswordField();

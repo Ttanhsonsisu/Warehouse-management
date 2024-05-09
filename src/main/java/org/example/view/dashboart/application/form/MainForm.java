@@ -3,6 +3,7 @@ package org.example.view.dashboart.application.form;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.util.UIScale;
+import jakarta.persistence.EntityManager;
 import org.example.view.dashboart.application.Application;
 import org.example.view.dashboart.application.form.other.FormDashboard;
 import org.example.view.dashboart.application.form.other.FormInbox;
@@ -27,7 +28,9 @@ import javax.swing.border.EmptyBorder;
 
 public class MainForm extends JLayeredPane {
 
-    public MainForm() {
+    private final EntityManager em;
+    public MainForm( EntityManager em) {
+        this.em = em;
         init();
     }
 
@@ -73,7 +76,7 @@ public class MainForm extends JLayeredPane {
                 Application.showForm(new FormDashboard());
             } else if (index == 1) {
 
-                    Application.showForm(new UserInfo());
+                    Application.showForm(new UserInfo(em));
 
             } else if (index == 2) {
                 Application.logout();

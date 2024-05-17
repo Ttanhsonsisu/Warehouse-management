@@ -31,8 +31,10 @@ public class UserApp {
 
     protected String name;
 
+
     @Enumerated(EnumType.STRING)
     protected UserRole role;
+
     public UserApp(Integer idUser, String email, String userName, String password, String verifyCode) {
         this.idUser = idUser;
         this.email = email;
@@ -41,11 +43,13 @@ public class UserApp {
         this.verifyCode = verifyCode;
     }
 
-    public UserApp( String userName, String email, String password) {
-
+    public UserApp( String email, String password, String role, String namem, String phoneNumber) {
+        this.name = name;
         this.email = email;
-        this.userName = userName;
+        this.userName = email;
+        this.role = UserRole.valueOf(role);
         this.password = password;
+        this.phoneNumber = phoneNumber;
     }
 
     public UserApp(String userName, String password) {
@@ -53,7 +57,17 @@ public class UserApp {
         this.password = password;
     }
 
+
     protected String status;
 
-
+    @Override
+    public String toString() {
+        return "UserApp{" +
+                "email='" + email + '\'' +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }

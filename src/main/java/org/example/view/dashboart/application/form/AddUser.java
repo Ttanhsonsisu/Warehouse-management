@@ -1,20 +1,25 @@
 package org.example.view.dashboart.application.form;
 
-import com.formdev.flatlaf.FlatLaf;
-
-import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
-
-import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import jakarta.persistence.EntityManager;
+import lombok.Getter;
+import org.example.controller.AddFormController;
+import org.example.model.entities.UserApp;
+import org.example.model.entities.enums.UserRole;
+import raven.toast.Notifications;
 
-import java.awt.Font;
 import javax.swing.JProgressBar;
-import javax.swing.UIManager;
 
 
 public class AddUser extends javax.swing.JFrame {
 
     private final EntityManager em;
+
+    private AddFormController addFormController;
+
+
+
+    @Getter
+    private UserApp dataSave;
 
     public AddUser(EntityManager em) {
         this.em = em;
@@ -24,6 +29,8 @@ public class AddUser extends javax.swing.JFrame {
 //        FlatMacLightLaf.setup();
         initComponents();
         new JProgressBar().setIndeterminate(true);
+
+
     }
 
     @SuppressWarnings("unchecked")
@@ -37,7 +44,7 @@ public class AddUser extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         txtUserName = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        txtEmail = new javax.swing.JTextField();
+        txtPhoneNumber = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         txtPassword = new javax.swing.JPasswordField();
         jSeparator1 = new javax.swing.JSeparator();
@@ -92,13 +99,13 @@ public class AddUser extends javax.swing.JFrame {
         crazyPanel1.add(jLabel4);
         crazyPanel1.add(txtName);
 
-        jLabel5.setText("UserName");
+        jLabel5.setText("UserName & Email");
         crazyPanel1.add(jLabel5);
         crazyPanel1.add(txtUserName);
 
-        jLabel6.setText("Email Address");
+        jLabel6.setText("Số điện thoại");
         crazyPanel1.add(jLabel6);
-        crazyPanel1.add(txtEmail);
+        crazyPanel1.add(txtPhoneNumber);
 
         jLabel16.setText("Password");
         crazyPanel1.add(jLabel16);
@@ -121,9 +128,7 @@ public class AddUser extends javax.swing.JFrame {
         cmdSave.setText("Save");
         cmdSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                System.out.println("adduser");
                 cmdSaveActionPerformed(evt);
-
             }
         });
         crazyPanel1.add(cmdSave);
@@ -147,7 +152,52 @@ public class AddUser extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmdSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdSaveActionPerformed
-        this.dispose();
+        boolean check = false;
+
+        String name = txtName.getText();
+
+        String email = txtUserName.getText();
+        String phoneNumber = txtPhoneNumber.getText();
+        String password = txtPassword.getText();
+        String role = (String) ccbRole.getSelectedItem();
+
+        dataSave = new UserApp();
+
+        // show log data logn
+        System.out.println(name+" "+email+" "+password+" "+role);
+
+        if(name == "" & email == "" & password == "" ) {
+            System.out.print("no info");
+        } else {
+            dataSave.setName(name);
+            dataSave.setEmail(email);
+            dataSave.setUserName(email);
+            dataSave.setPassword(password);
+            dataSave.setPhoneNumber(phoneNumber);
+
+            if (role == "Admin") {
+                dataSave.setRole(UserRole.ADMIN);
+            } else if (role == "Supplier") {
+                dataSave.setRole(UserRole.SUPPLIER);
+            } else if (role == "Client") {
+                dataSave.setRole(UserRole.CLIENT);
+            } else {
+                dataSave.setRole(UserRole.OTHER);
+            }
+
+            //System.out.println("adduser");
+        }
+
+        addFormController = new AddFormController(em);
+        check = addFormController.addUser(this);
+        //System.out.println(name + " " + email + " " + password + " " + role);
+
+        if(!check) {
+            Notifications.getInstance().show(Notifications.Type.WARNING, "chưa có thông tin");
+        } else if(check) {
+
+            this.dispose();
+        }
     }//GEN-LAST:event_cmdSaveActionPerformed
 
 //    public static void main(String args[]) {
@@ -176,10 +226,10 @@ public class AddUser extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtPhoneNumber;
     private javax.swing.JTextField txtName;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtProductSupplier;
     private javax.swing.JTextField txtUserName;
-    // End of variables declaration//GEN-END:variables
+//     End of variables declaration//GEN-END:variables
 }

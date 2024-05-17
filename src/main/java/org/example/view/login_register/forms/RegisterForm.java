@@ -85,7 +85,7 @@ public class RegisterForm extends JPanel {
                     String email = txtEmail.getText();
                     String password = String.valueOf(txtPassword.getPassword());
                     System.out.print(name+" "+email+" "+ password);
-                    dataUserRegister = new UserApp(name, email, password);
+                    //dataUserRegister = new UserApp(name, email, password);
                 } else {
                     chConfirm.setForeground(Color.red);
                 }

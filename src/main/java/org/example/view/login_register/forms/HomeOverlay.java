@@ -292,7 +292,7 @@ public class HomeOverlay extends JWindow {
                     );
             registerController = new RegisterController(em);
             cmdRegister.addActionListener(e ->{
-                registerController.register(panelRegister);
+                //registerController.register(panelRegister);
             });
 
             panelRegister.add(cmdExit);

@@ -11,7 +11,7 @@ import org.example.model.entities.interfacies.ActiveWithItem;
 public class Employee extends UserApp implements ActiveWithItem {
 
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(length = 500)
     private Deparment deparment;
 

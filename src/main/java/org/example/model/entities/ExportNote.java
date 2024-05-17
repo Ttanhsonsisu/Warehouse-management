@@ -17,7 +17,7 @@ public class ExportNote extends ProductTransactionAbstract {
     @Id
     @GeneratedValue
     private Integer idExportNote;
-//
+
     @ManyToOne
     private Client client ;
 

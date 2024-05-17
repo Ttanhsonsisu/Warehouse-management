@@ -39,8 +39,8 @@ public class Main {
         EntityManager em = emf.createEntityManager();
         System.out.println(em);
 
-//       MainLoginRegister a = new MainLoginRegister(em);
-//       a.setVisible(true);
+       //MainLoginRegister a = new MainLoginRegister(em);
+     //a.setVisible(true);
         // check service
         //Application testApp = new Application(em);
         Application.initForm(em);

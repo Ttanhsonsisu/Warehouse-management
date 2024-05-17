@@ -58,13 +58,13 @@
         <dependency>
             <groupId>com.formdev</groupId>
             <artifactId>flatlaf</artifactId>
-            <version>3.4.1</version>
+            <version>3.2.1</version>
         </dependency>
 
         <dependency>
             <groupId>com.formdev</groupId>
             <artifactId>flatlaf-extras</artifactId>
-            <version>3.4.1</version>
+            <version>3.2.1</version>
         </dependency>
 
         <dependency>
@@ -76,9 +76,10 @@
         <dependency>
             <groupId>com.github.weisj</groupId>
             <artifactId>jsvg</artifactId>
-            <version>1.2.0</version>
+            <version>1.4.0</version>
             <scope>runtime</scope>
         </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/net.java.dev.timingframework/timingframework -->
         <dependency>

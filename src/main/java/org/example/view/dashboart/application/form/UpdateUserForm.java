@@ -1,30 +1,34 @@
 package org.example.view.dashboart.application.form;
 
-import com.formdev.flatlaf.FlatLaf;
-
-import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
-
-import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import jakarta.persistence.EntityManager;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.controller.UpdateUserController;
 import org.example.model.entities.UserApp;
+import org.example.view.dashboart.application.form.other.UserInfo;
+import org.hibernate.sql.Update;
+import raven.toast.Notifications;
 
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
 
-public class UpdateUser extends javax.swing.JFrame {
+public class UpdateUserForm extends javax.swing.JFrame {
 
     private final EntityManager em;
 
     @Setter @Getter
     private UserApp data;
 
-    public UpdateUser(EntityManager em) {
+    private UserInfo userInfo;
+
+    private UpdateUserController updateUserController;
+
+    public UpdateUserForm(EntityManager em , UserInfo userInfo) {
         this.em = em;
+
+        this.userInfo = userInfo;
 //        FlatRobotoFont.install();
 //        FlatLaf.registerCustomDefaultsSource("crazypanel");
 //        UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
@@ -100,13 +104,13 @@ public class UpdateUser extends javax.swing.JFrame {
         crazyPanel1.add(jLabel4);
         crazyPanel1.add(txtName);
 
-        jLabel5.setText("UserName");
+        jLabel5.setText("UserName & email");
         crazyPanel1.add(jLabel5);
 
         txtUserName.setEditable(false);
         crazyPanel1.add(txtUserName);
 
-        jLabel6.setText("Email Address");
+        jLabel6.setText("Số điện thoại");
         crazyPanel1.add(jLabel6);
 
         txtEmail.setEditable(false);
@@ -124,6 +128,12 @@ public class UpdateUser extends javax.swing.JFrame {
         crazyPanel1.add(jLabel12);
 
         ccbRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Supplier", "Client" }));
+
+        txtUserName.setText(userInfo.getDataSelectTbl().getUserName());
+        txtEmail.setText(userInfo.getDataSelectTbl().getEmail());
+        txtPassword.setText(userInfo.getDataSelectTbl().getPassword());
+        txtName.setText(userInfo.getDataSelectTbl().getName());
+
 
         crazyPanel1.add(ccbRole);
 
@@ -148,14 +158,7 @@ public class UpdateUser extends javax.swing.JFrame {
         }});
         cmdSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                String name = txtName.getText();
-                String email = txtEmail.getText();
-                String password = txtPassword.getText();
-                String role = (String) ccbRole.getSelectedItem();
 
-                String productSupplier = (String) txtProductSupplier.getText();
-                data = new UserApp(12, email, password , role , productSupplier);
-                System.out.println("updateUser");
                 cmdSaveActionPerformed(evt);
 
             }
@@ -181,7 +184,34 @@ public class UpdateUser extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmdSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdSaveActionPerformed
-        this.dispose();
+
+        String name = txtName.getText();
+        //String email = txtEmail.getText();
+        String password = txtPassword.getText();
+        String role = (String) ccbRole.getSelectedItem();
+        String email = txtEmail.getText();
+
+        //String phoneNumber = txt
+        String productSupplier = (String) txtProductSupplier.getText();
+
+        data = new UserApp();
+        data.setEmail(email);
+        data.setName(name);
+
+       try {
+           data.setPassword(password);
+           updateUserController = new UpdateUserController(em);
+           updateUserController.updateUser(this);
+           System.out.println("updateUser");
+
+           Notifications.getInstance().show(Notifications.Type.SUCCESS, "Bạn đã thay đổi thông tin thành công");
+       } catch (Exception e) {
+           e.printStackTrace();
+       } finally {
+           Notifications.getInstance().show(Notifications.Type.ERROR , "thay đổi thất bại");
+           this.dispose();
+       }
+
     }//GEN-LAST:event_cmdSaveActionPerformed
 
 //    public static void main(String args[]) {

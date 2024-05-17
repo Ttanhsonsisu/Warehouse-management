@@ -36,7 +36,7 @@ public class LoginForm extends JPanel {
         JLabel title = new JLabel("Login to your account", SwingConstants.CENTER);
         JTextField txtUsername = new JTextField();
         JPasswordField txtPassword = new JPasswordField();
-        //JCheckBox chRememberMe = new JCheckBox("Remember me");
+        JCheckBox chRememberMe = new JCheckBox("Remember me");
         JButton cmdLogin = new JButton("Login");
 
 
@@ -67,7 +67,7 @@ public class LoginForm extends JPanel {
 
             System.out.print(userName + " " + password);
 
-            new LoginController(em).login(this);
+            //new LoginController(em).login(this);
         });
 
         add(title);

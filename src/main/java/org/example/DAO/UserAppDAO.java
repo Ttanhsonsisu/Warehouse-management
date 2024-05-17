@@ -37,8 +37,8 @@ public class UserAppDAO {
         return em.createQuery(cq).getResultList();
 
     }
-    public void insertLoginRegister(String userName, String email , String password) {
-        em.persist(new UserApp(userName , email, password));
+    public void insertLoginRegister(UserApp userApp) {
+        em.persist(userApp);
     }
 
     public UserApp findLoginRegister(String userName, String password) {
@@ -58,17 +58,17 @@ public class UserAppDAO {
         return query.getSingleResult();
     }
 
-    public Integer findUserAppId(String user) {
+    public Integer findUserAppId(String email) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Integer> cq = cb.createQuery(Integer.class);
+        CriteriaQuery<UserApp> cq = cb.createQuery(UserApp.class);
 
         Root<UserApp> root = cq.from(UserApp.class);
-        Predicate userNamePred = cb.like(root.get("userName"),  user );
+        Predicate userNamePred = cb.like(root.get("email"),  email );
         cq.where(userNamePred);
-        TypedQuery<Integer> query = em.createQuery(cq);
+        TypedQuery<UserApp> query = em.createQuery(cq);
+        var result = query.getSingleResult();
 
-
-        return query.getSingleResult();
+        return result.getIdUser();
     }
 
     public List<Integer> findUserEmail(String email) {
@@ -93,4 +93,6 @@ public class UserAppDAO {
         TypedQuery<UserApp> query = em.createQuery(cq);
         return query.getSingleResult();
     }
+
+
 }

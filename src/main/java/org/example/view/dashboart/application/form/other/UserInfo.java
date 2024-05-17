@@ -3,9 +3,11 @@ package org.example.view.dashboart.application.form.other;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import jakarta.persistence.EntityManager;
+import lombok.Getter;
 import org.example.controller.UserInfoController;
+import org.example.model.entities.UserApp;
 import org.example.view.dashboart.application.form.AddUser;
-import org.example.view.dashboart.application.form.UpdateUser;
+import org.example.view.dashboart.application.form.UpdateUserForm;
 
 
 import javax.swing.*;
@@ -13,23 +15,30 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
-import java.text.DecimalFormat;
-import java.util.Random;
+import java.awt.event.MouseEvent;
 
 
 public class UserInfo extends javax.swing.JPanel {
 
     private UserInfoController userInfoController;
 
+
     private final EntityManager em;
+
+    @Getter
+    private UserApp dataSelectTbl;
+
+
     public UserInfo(EntityManager em) {
         this.em = em;
+        userInfoController = new UserInfoController(em);
         initComponents();
         applyTableStyle(jTable1);
         addDataTbl(jTable1);
     }
-        private void addDataTbl(JTable table) {
-            userInfoController = new UserInfoController(em);
+
+        public void addDataTbl(JTable table) {
+
             userInfoController.ShowDataTbl(table);
         }
 
@@ -39,7 +48,8 @@ public class UserInfo extends javax.swing.JPanel {
          cmdUpdate.setIcon(new FlatSVGIcon("icon/svg/edit.svg", 0.35f));
          cmdDelete.setIcon(new FlatSVGIcon("icon/svg/delete.svg",0.35f));
           txtSearch.putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_ICON, new FlatSVGIcon("icon/svg/search.svg", 0.35f));
-         //scron
+
+          //scron
           JScrollPane scroll = (JScrollPane) table.getParent().getParent();
         scroll.setBorder(BorderFactory.createEmptyBorder());
                 scroll.getVerticalScrollBar().putClientProperty(FlatClientProperties.STYLE, ""
@@ -105,6 +115,18 @@ public class UserInfo extends javax.swing.JPanel {
         jScrollPane1 = new JScrollPane();
         jTable1 = new JTable();
 
+        // add event jtable
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
+
+        // code continue
+
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
         crazyPanel1.setMigLayoutConstraints(new org.example.view.crazypanel.MigLayoutConstraints(
             "wrap,fill,insets 15",
             "[fill]",
@@ -138,6 +160,7 @@ public class UserInfo extends javax.swing.JPanel {
         cmdAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmdAddActionPerformed(evt);
+               // addDataTbl(jTable1);
             }
         });
         crazyPanel2.add(cmdAdd);
@@ -146,6 +169,12 @@ public class UserInfo extends javax.swing.JPanel {
         cmdUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmdUpdateActionPerformed(evt);
+            }
+        });
+
+        cmdDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdDeleteActionPerformed(evt);
             }
         });
         crazyPanel2.add(cmdUpdate);
@@ -160,14 +189,14 @@ public class UserInfo extends javax.swing.JPanel {
 
             },
             new String [] {
-                "", "UseName", "Email", "Số điện Thoại", "Tên", "role"
+                 "UseName", "Email", "Số điện Thoại", "Tên", "role"
             }
         ) {
             Class[] types = new Class [] {
-                Boolean.class, String.class, String.class, String.class, String.class, String.class
+                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, true, true
+                    false, false, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -201,6 +230,30 @@ public class UserInfo extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTable1MouseClicked(MouseEvent evt) {
+        if(jTable1.getSelectedRowCount() > 1 || jTable1.getSelectedRowCount() < 1) {
+            return;
+        }
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+
+       String userName = model.getValueAt(jTable1.getSelectedRow(), 0).toString();
+       String email = model.getValueAt(jTable1.getSelectedRow(), 1).toString();
+       String phoneNumber = model.getValueAt(jTable1.getSelectedRow(), 2).toString();
+       String name = model.getValueAt(jTable1.getSelectedRow(), 3).toString();
+
+       dataSelectTbl = new UserApp();
+       dataSelectTbl.setUserName(userName);
+       dataSelectTbl.setEmail(email);
+       dataSelectTbl.setName(name);
+       dataSelectTbl.setPhoneNumber(phoneNumber);
+       System.out.println(dataSelectTbl.toString());
+
+    }
+
+    private void cmdDeleteActionPerformed(java.awt.event.ActionEvent evt) {
+
+    }
+
     private void cmdAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAddActionPerformed
         
         if(!showFrameAdd) {
@@ -216,19 +269,21 @@ public class UserInfo extends javax.swing.JPanel {
     }//GEN-LAST:event_cmdAddActionPerformed
 
     private void cmdUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdUpdateActionPerformed
-        
-        
-        if(!showFrameUpdate) {
-            showFrameUpdate = true;
-            updateUserFrame = new UpdateUser(em);
-            updateUserFrame.setVisible(true);
-           
-        } else {
-        updateUserFrame.dispose();
-        updateUserFrame = new UpdateUser(em);
-        updateUserFrame.setVisible(true);
-        }
+
+
+            if(!showFrameUpdate) {
+                showFrameUpdate = true;
+                updateUserFrame = new UpdateUserForm(em, this);
+                updateUserFrame.setVisible(true);
+
+            } else {
+                updateUserFrame.dispose();
+                updateUserFrame = new UpdateUserForm(em, this);
+                updateUserFrame.setVisible(true);
+            }
+
     }//GEN-LAST:event_cmdUpdateActionPerformed
+
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
         // TODO add your handling code here:
@@ -237,7 +292,7 @@ public class UserInfo extends javax.swing.JPanel {
     private boolean showFrameAdd = false;
     private boolean showFrameUpdate = false;
     private AddUser addUserFrame;
-    private UpdateUser updateUserFrame;
+    private UpdateUserForm updateUserFrame;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmdAdd;
     private javax.swing.JButton cmdDelete;

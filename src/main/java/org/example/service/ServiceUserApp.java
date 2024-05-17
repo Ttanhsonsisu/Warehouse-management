@@ -26,15 +26,24 @@ public class ServiceUserApp {
     public void insertUser(UserApp userApp) {
         em.getTransaction().begin();
         UserAppDAO userDao = new UserAppDAO(em);
-        userDao.insertLoginRegister(userApp.getUserName(), userApp.getEmail(), userApp.getPassword());
+
+        userDao.insertLoginRegister(userApp);
+
         em.getTransaction().commit();
     }
 
     public UserApp findUserbyNameAndPass (UserApp userApp) {
-        em.getTransaction().begin();
-        UserAppDAO userDao = new UserAppDAO(em);
-        UserApp r = userDao.findLoginRegister(userApp.getUserName(), userApp.getPassword());
-        em.getTransaction().commit();
+        UserApp r = new UserApp();
+        try {
+           em.getTransaction().begin();
+           UserAppDAO userDao = new UserAppDAO(em);
+           r = userDao.findLoginRegister(userApp.getUserName(), userApp.getPassword());
+
+       } catch(Exception e) {
+           e.printStackTrace();
+       } finally {
+           em.getTransaction().commit();
+       }
         return r;
     }
 
@@ -55,6 +64,25 @@ public class ServiceUserApp {
         em.getTransaction().begin();
         UserAppDAO userDao = new UserAppDAO(em);
         // find userApp by id
-
+        UserApp dataDel = userDao.findUserById(Id);
+        em.remove(dataDel);
+        em.getTransaction().commit();
     }
+
+    public UserApp updateUserApp(UserApp update ) {
+        em.getTransaction().begin();
+
+        UserAppDAO userDao = new UserAppDAO(em);
+        int id = userDao.findUserAppId(update.getEmail());
+
+        UserApp result = em.find(UserApp.class, id);
+        //result.setUserName(before.getUserName()); // no settext
+        result.setPassword(update.getPassword());
+        result.setPassword(update.getPassword());
+        result.setName(update.getName());
+
+        em.getTransaction().commit();
+        return result;
+    }
+
 }

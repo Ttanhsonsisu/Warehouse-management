@@ -9,6 +9,8 @@ import org.example.view.dashboart.application.form.other.UserInfo;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.util.List;
 
 public class UserInfoController {
@@ -38,11 +40,8 @@ public class UserInfoController {
                     );
         }
 
+        TableRowSorter<TableModel> rowSorter = new TableRowSorter<TableModel>(model);
+        table.setRowSorter(rowSorter);
     }
-
-    public void addUserInfo(JTable table) {
-
-    }
-
 
 }

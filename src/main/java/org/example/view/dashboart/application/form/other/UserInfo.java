@@ -4,11 +4,13 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import jakarta.persistence.EntityManager;
 import lombok.Getter;
+import org.example.controller.DeleteUserController;
+import org.example.controller.SearchTableController;
 import org.example.controller.UserInfoController;
 import org.example.model.entities.UserApp;
 import org.example.view.dashboart.application.form.AddUser;
 import org.example.view.dashboart.application.form.UpdateUserForm;
-
+import raven.toast.Notifications;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -22,6 +24,7 @@ public class UserInfo extends javax.swing.JPanel {
 
     private UserInfoController userInfoController;
 
+    private DeleteUserController deleteUserController;
 
     private final EntityManager em;
 
@@ -32,6 +35,7 @@ public class UserInfo extends javax.swing.JPanel {
     public UserInfo(EntityManager em) {
         this.em = em;
         userInfoController = new UserInfoController(em);
+        deleteUserController = new DeleteUserController(em);
         initComponents();
         applyTableStyle(jTable1);
         addDataTbl(jTable1);
@@ -43,6 +47,16 @@ public class UserInfo extends javax.swing.JPanel {
         }
 
 
+    public void updataDataTbl() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        int rowCount = model.getRowCount();
+        for (int i = rowCount - 1; i >= 0; i--) {
+            model.removeRow(i);
+        }
+
+        userInfoController.ShowDataTbl(jTable1);
+
+    }
      private void applyTableStyle(JTable table) {
          cmdAdd.setIcon(new FlatSVGIcon("icon/svg/add.svg", 0.35f));
          cmdUpdate.setIcon(new FlatSVGIcon("icon/svg/edit.svg", 0.35f));
@@ -122,6 +136,7 @@ public class UserInfo extends javax.swing.JPanel {
                 jTable1MouseClicked(evt);
             }
         });
+
 
         // code continue
 
@@ -231,15 +246,32 @@ public class UserInfo extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTable1MouseClicked(MouseEvent evt) {
+//
+//        jTable.getSelectionModel().addListSelectionListener(event -> {
+//            if (!event.getValueIsAdjusting()) {
+//                int viewRowIndex = jTable.getSelectedRow();
+//                if (viewRowIndex != -1) {
+//                    int modelRowIndex = jTable.convertRowIndexToModel(viewRowIndex);
+//                    System.out.println("Selected row in model: " + modelRowIndex);
+//                    // Perform your logic with the model row index here
+//                }
+//            }
+//        });
+
         if(jTable1.getSelectedRowCount() > 1 || jTable1.getSelectedRowCount() < 1) {
             return;
         }
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
-       String userName = model.getValueAt(jTable1.getSelectedRow(), 0).toString();
-       String email = model.getValueAt(jTable1.getSelectedRow(), 1).toString();
-       String phoneNumber = model.getValueAt(jTable1.getSelectedRow(), 2).toString();
-       String name = model.getValueAt(jTable1.getSelectedRow(), 3).toString();
+        System.out.print(jTable1.getSelectedRow());
+// convert to index default table
+            int viewRowIndex = jTable1.getSelectedRow();
+            int modelRowIndex = jTable1.convertRowIndexToModel(viewRowIndex);
+
+       String userName = model.getValueAt(modelRowIndex, 0).toString();
+       String email = model.getValueAt(modelRowIndex, 1).toString();
+       String phoneNumber = model.getValueAt(modelRowIndex, 2).toString();
+       String name = model.getValueAt(modelRowIndex, 3).toString();
 
        dataSelectTbl = new UserApp();
        dataSelectTbl.setUserName(userName);
@@ -251,26 +283,32 @@ public class UserInfo extends javax.swing.JPanel {
     }
 
     private void cmdDeleteActionPerformed(java.awt.event.ActionEvent evt) {
+        try {
+            deleteUserController.deleteUser(dataSelectTbl);
+            updataDataTbl();
+            Notifications.getInstance().show(Notifications.Type.SUCCESS, "Xoa Thanh cong");
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            Notifications.getInstance().show(Notifications.Type.ERROR, "Xoa khong thanh cong");
+        }
     }
 
     private void cmdAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAddActionPerformed
         
         if(!showFrameAdd) {
             showFrameAdd = true;
-            addUserFrame = new AddUser(em);
+            addUserFrame = new AddUser(em, this);
             addUserFrame.setVisible(true);
             
         } else {
         addUserFrame.dispose();
-        addUserFrame = new AddUser(em);
+        addUserFrame = new AddUser(em, this);
         addUserFrame.setVisible(true);
         }
     }//GEN-LAST:event_cmdAddActionPerformed
 
     private void cmdUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdUpdateActionPerformed
-
-
             if(!showFrameUpdate) {
                 showFrameUpdate = true;
                 updateUserFrame = new UpdateUserForm(em, this);
@@ -284,9 +322,11 @@ public class UserInfo extends javax.swing.JPanel {
 
     }//GEN-LAST:event_cmdUpdateActionPerformed
 
-
+    private SearchTableController searchTableController;
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
-        // TODO add your handling code here:
+        searchTableController = new SearchTableController();
+        searchTableController.searchTable(jTable1, txtSearch);
+
     }//GEN-LAST:event_txtSearchActionPerformed
 
     private boolean showFrameAdd = false;
@@ -300,6 +340,8 @@ public class UserInfo extends javax.swing.JPanel {
     private org.example.view.crazypanel.CrazyPanel crazyPanel1;
     private org.example.view.crazypanel.CrazyPanel crazyPanel2;
     private JScrollPane jScrollPane1;
+
+    @Getter
     private JTable jTable1;
     private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables

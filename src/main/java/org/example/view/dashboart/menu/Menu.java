@@ -25,11 +25,15 @@ import javax.swing.JScrollPane;
 public class Menu extends JPanel {
 
     private final String menuItems[][] = {
-        {"~MAIN~"},
-        {"Dashboard"},
-        {"~THÔNG TIN NGƯỜI DÙNG~"},
-        {"Người dùng"},
-
+            {"~TRANG CHỦ~"},
+            {"Dashboard"},
+            {"~THÔNG TIN NGƯỜI DÙNG~"},
+            {"Người dùng"},
+            {"~THÔNG TIN HÀNG HÓA~"},
+            {"Hàng hóa"},
+            {"~HÓA ĐƠN~"},
+            {"TẠO NHẬP&XUẤT","Phiếu nhập" , "Phếu xuất"},
+            {"Phiên giao dịch"},
         {"Logout"}
     };
 

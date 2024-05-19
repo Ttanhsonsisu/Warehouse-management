@@ -12,6 +12,7 @@ import raven.toast.Notifications;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 
 public class UpdateUserForm extends javax.swing.JFrame {
@@ -208,7 +209,11 @@ public class UpdateUserForm extends javax.swing.JFrame {
        } catch (Exception e) {
            e.printStackTrace();
        } finally {
-           Notifications.getInstance().show(Notifications.Type.ERROR , "thay đổi thất bại");
+
+
+           //userInfo.updataDataTbl(userInfo.getJTable1());
+           // update info for table;
+           userInfo.updataDataTbl();
            this.dispose();
        }
 

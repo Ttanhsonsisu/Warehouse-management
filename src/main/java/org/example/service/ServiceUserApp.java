@@ -60,13 +60,20 @@ public class ServiceUserApp {
         return checkDuplicate;
     }
 
-    public void delUserAppById(Integer Id) {
-        em.getTransaction().begin();
-        UserAppDAO userDao = new UserAppDAO(em);
-        // find userApp by id
-        UserApp dataDel = userDao.findUserById(Id);
-        em.remove(dataDel);
-        em.getTransaction().commit();
+    public void delUserApp(UserApp delete) {
+        try {
+            em.getTransaction().begin();
+            UserAppDAO userDao = new UserAppDAO(em);
+            int id = userDao.findUserAppId(delete.getEmail());
+            UserApp dataDel = em.find(UserApp.class, id);
+            // find userApp by id
+            em.remove(dataDel);
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            em.getTransaction().commit();
+        }
+
     }
 
     public UserApp updateUserApp(UserApp update ) {

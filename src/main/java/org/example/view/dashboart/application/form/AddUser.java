@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.example.controller.AddFormController;
 import org.example.model.entities.UserApp;
 import org.example.model.entities.enums.UserRole;
+import org.example.view.dashboart.application.form.other.UserInfo;
 import raven.toast.Notifications;
 
 import javax.swing.JProgressBar;
@@ -16,13 +17,14 @@ public class AddUser extends javax.swing.JFrame {
 
     private AddFormController addFormController;
 
-
+    private UserInfo userInfo;
 
     @Getter
     private UserApp dataSave;
 
-    public AddUser(EntityManager em) {
+    public AddUser(EntityManager em , UserInfo userInfo) {
         this.em = em;
+        this.userInfo = userInfo;
 //        FlatRobotoFont.install();
 //        FlatLaf.registerCustomDefaultsSource("theme");
 //        UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
@@ -187,17 +189,22 @@ public class AddUser extends javax.swing.JFrame {
 
             //System.out.println("adduser");
         }
+try {
+    addFormController = new AddFormController(em);
+    check = addFormController.addUser(this);
+    //System.out.println(name + " " + email + " " + password + " " + role);
 
-        addFormController = new AddFormController(em);
-        check = addFormController.addUser(this);
-        //System.out.println(name + " " + email + " " + password + " " + role);
-
-        if(!check) {
-            Notifications.getInstance().show(Notifications.Type.WARNING, "chưa có thông tin");
-        } else if(check) {
-
-            this.dispose();
-        }
+} catch(Exception e) {
+    e.printStackTrace();
+} finally {
+    if (!check) {
+        Notifications.getInstance().show(Notifications.Type.WARNING, "chưa có thông tin");
+    } else if (check) {
+        userInfo.updataDataTbl();
+        Notifications.getInstance().show(Notifications.Type.SUCCESS, "Thay đổi thông tin thành công");
+        this.dispose();
+    }
+}
     }//GEN-LAST:event_cmdSaveActionPerformed
 
 //    public static void main(String args[]) {

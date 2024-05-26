@@ -1,11 +1,10 @@
 package org.example.view.dashboart.application.form.login;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import com.sun.jna.platform.win32.Netapi32Util;
 import jakarta.persistence.EntityManager;
 import lombok.Getter;
 import net.miginfocom.swing.MigLayout;
-import org.example.controller.LoginController;
+import org.example.controller.userController.LoginController;
 import org.example.model.entities.UserApp;
 import org.example.view.dashboart.application.Application;
 

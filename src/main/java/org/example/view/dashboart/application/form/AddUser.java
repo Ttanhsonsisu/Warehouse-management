@@ -2,7 +2,7 @@ package org.example.view.dashboart.application.form;
 
 import jakarta.persistence.EntityManager;
 import lombok.Getter;
-import org.example.controller.AddFormController;
+import org.example.controller.userController.AddFormController;
 import org.example.model.entities.UserApp;
 import org.example.model.entities.enums.UserRole;
 import org.example.view.dashboart.application.form.other.UserInfo;

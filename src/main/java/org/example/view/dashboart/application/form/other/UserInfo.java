@@ -4,12 +4,13 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import jakarta.persistence.EntityManager;
 import lombok.Getter;
-import org.example.controller.DeleteUserController;
+import org.example.controller.userController.DeleteUserController;
 import org.example.controller.SearchTableController;
-import org.example.controller.UserInfoController;
+import org.example.controller.userController.UserInfoController;
 import org.example.model.entities.UserApp;
 import org.example.view.dashboart.application.form.AddUser;
 import org.example.view.dashboart.application.form.UpdateUserForm;
+
 import raven.toast.Notifications;
 
 import javax.swing.*;
@@ -45,7 +46,6 @@ public class UserInfo extends javax.swing.JPanel {
 
             userInfoController.ShowDataTbl(table);
         }
-
 
     public void updataDataTbl() {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
@@ -93,6 +93,8 @@ public class UserInfo extends javax.swing.JPanel {
                     } else {
                         label.setHorizontalAlignment(SwingConstants.LEADING);
                     }
+
+
                     // 
 //                    if (header == false) {
 //                        if (column == 4) {
@@ -129,6 +131,7 @@ public class UserInfo extends javax.swing.JPanel {
         jScrollPane1 = new JScrollPane();
         jTable1 = new JTable();
 
+        jTable1.setRowHeight(40);
         // add event jtable
         ///////////////////////////////////////////////////////////////////////////////////////////////////////
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -136,10 +139,6 @@ public class UserInfo extends javax.swing.JPanel {
                 jTable1MouseClicked(evt);
             }
         });
-
-
-        // code continue
-
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         crazyPanel1.setMigLayoutConstraints(new org.example.view.crazypanel.MigLayoutConstraints(
@@ -271,12 +270,12 @@ public class UserInfo extends javax.swing.JPanel {
        String userName = model.getValueAt(modelRowIndex, 0).toString();
        String email = model.getValueAt(modelRowIndex, 1).toString();
        String phoneNumber = model.getValueAt(modelRowIndex, 2).toString();
-       String name = model.getValueAt(modelRowIndex, 3).toString();
+       //String name = model.getValueAt(modelRowIndex, 3).toString();
 
        dataSelectTbl = new UserApp();
        dataSelectTbl.setUserName(userName);
        dataSelectTbl.setEmail(email);
-       dataSelectTbl.setName(name);
+       //dataSelectTbl.setName(name);
        dataSelectTbl.setPhoneNumber(phoneNumber);
        System.out.println(dataSelectTbl.toString());
 
@@ -295,12 +294,12 @@ public class UserInfo extends javax.swing.JPanel {
     }
 
     private void cmdAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAddActionPerformed
-        
+
         if(!showFrameAdd) {
             showFrameAdd = true;
             addUserFrame = new AddUser(em, this);
             addUserFrame.setVisible(true);
-            
+
         } else {
         addUserFrame.dispose();
         addUserFrame = new AddUser(em, this);

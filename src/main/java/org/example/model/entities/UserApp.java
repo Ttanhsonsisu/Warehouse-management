@@ -7,12 +7,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.model.entities.enums.UserRole;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 public class UserApp {
 
     @Id
@@ -31,6 +32,13 @@ public class UserApp {
 
     protected String name;
 
+    @ManyToMany()
+    @JoinTable(
+            name = "Product_UserApp",
+            joinColumns = @JoinColumn(name = "idUserApp"),
+            inverseJoinColumns = @JoinColumn(name = "idProduct")
+    )
+    protected List<Product> productList;
 
     @Enumerated(EnumType.STRING)
     protected UserRole role;
@@ -43,7 +51,7 @@ public class UserApp {
         this.verifyCode = verifyCode;
     }
 
-    public UserApp( String email, String password, String role, String namem, String phoneNumber) {
+    public UserApp( String email, String password, String role, String name, String phoneNumber) {
         this.name = name;
         this.email = email;
         this.userName = email;

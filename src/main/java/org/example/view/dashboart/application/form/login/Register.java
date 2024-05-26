@@ -3,10 +3,9 @@ package org.example.view.dashboart.application.form.login;
 import com.formdev.flatlaf.FlatClientProperties;
 import jakarta.persistence.EntityManager;
 import lombok.Getter;
-import lombok.Setter;
 import net.miginfocom.swing.MigLayout;
 
-import org.example.controller.RegisterController;
+import org.example.controller.userController.RegisterController;
 import org.example.model.entities.UserApp;
 import org.example.model.entities.enums.UserRole;
 import org.example.view.dashboart.application.Application;

@@ -37,6 +37,7 @@ public class UserAppDAO {
         return em.createQuery(cq).getResultList();
 
     }
+
     public void insertLoginRegister(UserApp userApp) {
         em.persist(userApp);
     }

@@ -12,8 +12,12 @@ import javax.swing.UIManager;
 
 import jakarta.persistence.EntityManager;
 import org.example.view.dashboart.application.form.MainForm;
+import org.example.view.dashboart.application.form.export.FormChoseProduct;
 import org.example.view.dashboart.application.form.login.Login;
 import org.example.view.dashboart.application.form.login.Register;
+import raven.popup.DefaultOption;
+import raven.popup.GlassPanePopup;
+import raven.popup.component.SimplePopupBorder;
 import raven.toast.Notifications;
 
 
@@ -26,6 +30,7 @@ public class Application extends javax.swing.JFrame {
 
     private final Login loginForm;
     private final Register registerForm;
+
     public Application(EntityManager em) {
         //this.em = em;
         FlatRobotoFont.install();
@@ -36,7 +41,6 @@ public class Application extends javax.swing.JFrame {
         setSize(new Dimension(1366, 768));
         setLocationRelativeTo(null);
         mainForm = new MainForm(em);
-
 
         registerForm = new Register(em);
         loginForm = new Login(em);
@@ -49,6 +53,8 @@ public class Application extends javax.swing.JFrame {
         component.applyComponentOrientation(app.getComponentOrientation());
         app.mainForm.showForm(component);
     }
+
+
 
     public static void login() {
         FlatAnimatedLafChange.showSnapshot();

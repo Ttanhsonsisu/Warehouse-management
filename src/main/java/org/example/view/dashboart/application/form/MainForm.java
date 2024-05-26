@@ -5,10 +5,11 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.util.UIScale;
 import jakarta.persistence.EntityManager;
 import org.example.view.dashboart.application.Application;
-import org.example.view.dashboart.application.form.other.FormDashboard;
-import org.example.view.dashboart.application.form.other.FormInbox;
-import org.example.view.dashboart.application.form.other.FormRead;
-import org.example.view.dashboart.application.form.other.UserInfo;
+import org.example.view.dashboart.application.form.export.FormExport;
+import org.example.view.dashboart.application.form.import_form.FormImport;
+import org.example.view.dashboart.application.form.product.ProductForm;
+import org.example.view.dashboart.application.form.transaction_form.FormTransaction;
+import org.example.view.dashboart.application.form.other.*;
 import org.example.view.dashboart.menu.Menu;
 import org.example.view.dashboart.menu.MenuAction;
 
@@ -71,18 +72,27 @@ public class MainForm extends JLayeredPane {
 
     private void initMenuEvent() {
         menu.addMenuEvent((int index, int subIndex, MenuAction action) -> {
-            // Application.mainForm.showForm(new DefaultForm("Form : " + index + " " + subIndex));
+             //Application.mainForm.showForm(new DefaultForm("Form : " + index + " " + subIndex));
             if (index == 0) {
                 Application.showForm(new FormDashboard());
             } else if (index == 1) {
-
-                    Application.showForm(new UserInfo(em));
-
+                Application.showForm(new UserInfo(em));
             } else if (index == 2) {
+                Application.showForm(new ProductForm(em));
+            } else if(index == 3){
+              if(subIndex == 1){
+                  Application.showForm(new FormExport());
+              } else if(subIndex == 2){
+                  Application.showForm(new FormImport());
+              }
+            } else if (index == 4) {
+                Application.showForm(new FormTransaction());
+            } else if (index == 5) {
                 Application.logout();
             } else {
                 action.cancel();
             }
+
         });
     }
 

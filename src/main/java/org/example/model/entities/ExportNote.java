@@ -1,6 +1,7 @@
 package org.example.model.entities;
 
 
+import com.sun.jna.platform.win32.Netapi32Util;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -19,6 +20,6 @@ public class ExportNote extends ProductTransactionAbstract {
     private Integer idExportNote;
 
     @ManyToOne
-    private Client client ;
+    private UserApp client ;
 
 }

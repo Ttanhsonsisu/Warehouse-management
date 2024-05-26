@@ -3,16 +3,14 @@ package org.example.view.dashboart.application.form;
 import jakarta.persistence.EntityManager;
 import lombok.Getter;
 import lombok.Setter;
-import org.example.controller.UpdateUserController;
+import org.example.controller.userController.UpdateUserController;
 import org.example.model.entities.UserApp;
 import org.example.view.dashboart.application.form.other.UserInfo;
-import org.hibernate.sql.Update;
 import raven.toast.Notifications;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
 
 public class UpdateUserForm extends javax.swing.JFrame {

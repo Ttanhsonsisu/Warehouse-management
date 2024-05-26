@@ -9,7 +9,7 @@ import org.example.persistence.CustomPersistenceUnitInfo;
 
 import org.example.service.ServiceUserApp;
 import org.example.view.dashboart.application.Application;
-import org.example.view.login_register.MainLoginRegister;
+
 import org.hibernate.jpa.HibernatePersistenceProvider;
 
 

@@ -7,6 +7,7 @@ import jakarta.persistence.EntityManager;
 import lombok.Getter;
 import org.example.controller.SearchTableController;
 import org.example.controller.productController.ProductController;
+import org.example.controller.userController.LoginController;
 import org.example.model.entities.Product;
 import org.example.model.entities.enums.UnitItem;
 import org.example.view.dashboart.application.form.import_form.FrameNewProduct;
@@ -38,7 +39,10 @@ public class ProductForm extends javax.swing.JPanel {
 
     private boolean showFramNewProduct = false;
 
+
+
     private FrameNewProduct frameNewProduct;
+
     public ProductForm(EntityManager em) {
         this.em = em;
         initComponents();
@@ -271,18 +275,16 @@ public class ProductForm extends javax.swing.JPanel {
         );
     }// </editor-fold>
 
-
-
     private void cmdAddActionPerformed(java.awt.event.ActionEvent evt) {
 
         if(!showFramNewProduct) {
             showFramNewProduct = true;
-            frameNewProduct = new FrameNewProduct();
+            frameNewProduct = new FrameNewProduct(em, this);
             frameNewProduct.setVisible(true);
 
         } else {
             frameNewProduct.dispose();
-            frameNewProduct = new FrameNewProduct();
+            frameNewProduct = new FrameNewProduct(em, this);
             frameNewProduct.setVisible(true);
         }
     }
@@ -324,7 +326,7 @@ public class ProductForm extends javax.swing.JPanel {
 
         Integer idProduct = Integer.parseInt(model.getValueAt(modelRowIndex, 0).toString());
         String nameProduct = model.getValueAt(modelRowIndex, 1).toString();
-        int quantityProduct = Integer.parseInt(model.getValueAt(modelRowIndex, 2).toString());
+        Long quantityProduct = (long) Integer.parseInt(model.getValueAt(modelRowIndex, 2).toString());
         String unit = model.getValueAt(modelRowIndex, 3).toString();
         long price = Long.parseLong(model.getValueAt(modelRowIndex, 4).toString());
         String mota = model.getValueAt(modelRowIndex, 6).toString();

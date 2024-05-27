@@ -10,7 +10,10 @@ import java.awt.Font;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import com.sun.jna.platform.win32.Netapi32Util;
 import jakarta.persistence.EntityManager;
+import lombok.Getter;
+import org.example.model.entities.UserApp;
 import org.example.view.dashboart.application.form.MainForm;
 import org.example.view.dashboart.application.form.export.FormChoseProduct;
 import org.example.view.dashboart.application.form.login.Login;
@@ -28,8 +31,13 @@ public class Application extends javax.swing.JFrame {
 
     //private final EntityManager em;
 
+
+    @Getter
     private final Login loginForm;
+
     private final Register registerForm;
+
+
 
     public Application(EntityManager em) {
         //this.em = em;
@@ -49,11 +57,11 @@ public class Application extends javax.swing.JFrame {
         Notifications.getInstance().setJFrame(this);
     }
 
+
     public static void showForm(Component component) {
         component.applyComponentOrientation(app.getComponentOrientation());
         app.mainForm.showForm(component);
     }
-
 
 
     public static void login() {

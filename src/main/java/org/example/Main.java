@@ -3,10 +3,12 @@ package org.example;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
+import org.example.model.entities.Product;
 import org.example.model.entities.UserApp;
 import org.example.persistence.CustomPersistenceUnitInfo;
 
 
+import org.example.service.ServiceProduct;
 import org.example.service.ServiceUserApp;
 import org.example.view.dashboart.application.Application;
 
@@ -31,7 +33,7 @@ public class Main {
         Map<String, String> props = new HashMap<>();
 
         props.put("hibernate.show_sql" , "true");
-        props.put("hibernate.hbm2ddl.auto", "update");
+        props.put("hibernate.hbm2ddl.auto", "none");
 
         EntityManagerFactory emf = new HibernatePersistenceProvider().createContainerEntityManagerFactory(
                 new CustomPersistenceUnitInfo(puName), props);
@@ -50,6 +52,8 @@ public class Main {
         for (UserApp u : r) {
             System.out.println(u.toString());
         }
+ServiceProduct serviceProduct = new ServiceProduct(em);
+        //serviceProduct.updateQuantityProduct(em.find(Product.class, 302),100);
 //        ServiceUserApp app = new ServiceUserApp(em);
 //        boolean check = app.checkDuplicateEmail("tesr324");
 //        System.out.print(check);

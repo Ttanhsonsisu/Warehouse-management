@@ -1,12 +1,11 @@
 package org.example.model.entities;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import org.example.model.entities.abstractEntity.ProductTransactionAbstract;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -19,5 +18,12 @@ public class ImportNote extends ProductTransactionAbstract {
     @ManyToOne
     private UserApp suppiers;
 
+    @ManyToMany
+    @JoinTable(
+            name = "product_importnote",
+            joinColumns = @JoinColumn(name = "idimportnote"),
+            inverseJoinColumns = @JoinColumn(name = "idproduct")
+    )
+    private List<Product> products;
 
 }

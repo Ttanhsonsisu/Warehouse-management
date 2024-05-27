@@ -154,6 +154,7 @@ public class UserInfo extends javax.swing.JPanel {
                 "JTextField.placeholderText=Search;background=@background"
             }
         ));
+
         crazyPanel2.setMigLayoutConstraints(new org.example.view.crazypanel.MigLayoutConstraints(
             "",
             "[]push[][]",
@@ -168,6 +169,7 @@ public class UserInfo extends javax.swing.JPanel {
                 txtSearchActionPerformed(evt);
             }
         });
+
         crazyPanel2.add(txtSearch);
 
         cmdAdd.setText("Add");
@@ -177,6 +179,7 @@ public class UserInfo extends javax.swing.JPanel {
                // addDataTbl(jTable1);
             }
         });
+
         crazyPanel2.add(cmdAdd);
 
         cmdUpdate.setText("Update");

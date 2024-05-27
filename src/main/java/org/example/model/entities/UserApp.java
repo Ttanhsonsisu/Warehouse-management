@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.model.entities.enums.UserRole;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -38,7 +39,7 @@ public class UserApp {
             joinColumns = @JoinColumn(name = "idUserApp"),
             inverseJoinColumns = @JoinColumn(name = "idProduct")
     )
-    protected List<Product> productList;
+    protected List<Product> productList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     protected UserRole role;

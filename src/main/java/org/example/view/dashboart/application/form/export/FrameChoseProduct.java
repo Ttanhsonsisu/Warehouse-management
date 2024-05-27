@@ -2,18 +2,51 @@ package org.example.view.dashboart.application.form.export;
 
 
 
+import jakarta.persistence.EntityManager;
+import lombok.Getter;
+import org.example.controller.SearchTableController;
+import org.example.controller.productController.ProductController;
+import org.example.model.entities.Product;
+import org.example.model.entities.enums.UnitItem;
 import org.example.view.crazypanel.CrazyPanel;
 import org.example.view.crazypanel.FlatLafStyleComponent;
 import org.example.view.crazypanel.MigLayoutConstraints;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
+import java.util.List;
+
 public class FrameChoseProduct extends javax.swing.JFrame {
 
+    private final EntityManager em;
 
-    public FrameChoseProduct() {
+    private ArrayList<Product> products;
+
+    @Getter
+    private ProductController productController;
+
+    private SearchTableController searchTableController;
+
+    private FormExport formExport;
+    public FrameChoseProduct(EntityManager em, FormExport formExport) {
+        this.em = em;
+        this.formExport = formExport;
+
         initComponents();
+        init();
+
     }
 
+    private void init() {
+      productController = new ProductController(em);
+      products = new ArrayList<>();
+      addDataTbl(tblProduct1);
+    }
 
+    private void addDataTbl(JTable table) {
+        List<Product> listAdd = productController.showDataTblChoose(table);
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
@@ -27,7 +60,12 @@ public class FrameChoseProduct extends javax.swing.JFrame {
         tblProduct1 = new javax.swing.JTable();
         cmdExit = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+        txtSearch.addActionListener(e -> {
+            searchTableController = new SearchTableController();
+            searchTableController.searchTable(tblProduct1, txtSearch);
+        });
 
         crazyPanel1.setMigLayoutConstraints(new MigLayoutConstraints(
                 "wrap,fill,insets 10",
@@ -76,14 +114,14 @@ public class FrameChoseProduct extends javax.swing.JFrame {
 
                 },
                 new String [] {
-                        "", "mã", "Tên ", "Số Lượng", "Đơn vị", "Giá bán", "Nhà cung cấp", " Mô tả "
+                        "", "mã", "Tên ", "Số Lượng", "Đơn vị", "Giá bán", " Mô tả "
                 }
         ) {
             Class[] types = new Class [] {
-                    java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Object.class
+                    java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class,java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                    false, false, false, false, false, false, false, false
+                    true, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -135,7 +173,30 @@ public class FrameChoseProduct extends javax.swing.JFrame {
     }// </editor-fold>
 
     private void cmdAddActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tblProduct1.getModel();
+
+        for(int i = 0; i < model.getRowCount(); i++) {
+
+            if((boolean) model.getValueAt(i, 0) == true) {
+                Product product = new Product();
+                product.setIdProduct((Integer) model.getValueAt(i,1));
+                product.setNameProduct(model.getValueAt(i,2).toString());
+                String unit = model.getValueAt(i, 4).toString();
+                if(unit == "l") {
+                    product.setUnitProduct(UnitItem.l);
+                } else if(unit == "kg") {
+                    product.setUnitProduct(UnitItem.kg);
+                } else if(unit == "m") {
+                    product.setUnitProduct(UnitItem.m);
+                }
+                product.setPrice((Long) model.getValueAt(i, 5));
+
+                products.add(product);
+            }
+        }
+
+        formExport.addDataTbl(products);
+
     }
 
     private void tblProduct1AncestorAdded(javax.swing.event.AncestorEvent evt) {
@@ -147,7 +208,7 @@ public class FrameChoseProduct extends javax.swing.JFrame {
     }
 
     private void cmdExitActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        this.dispose();
     }
 
 

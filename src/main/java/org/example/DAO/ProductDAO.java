@@ -26,6 +26,16 @@ public class ProductDAO {
         return em.createQuery(cq).getResultList();
     }
 
+    public Product findByName(String name) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Product> cq = cb.createQuery(Product.class);
+        Root<Product> root = cq.from(Product.class);
+        Predicate predicate = cb.equal(root.get("name"), name);
+        cq.select(root).where(predicate);
+        TypedQuery<Product> query = em.createQuery(cq);
+        return query.getSingleResult();
+    }
+
     public Product findById(int id) {
         return em.find(Product.class, id);
     }

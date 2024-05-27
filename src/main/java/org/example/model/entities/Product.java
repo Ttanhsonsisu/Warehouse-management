@@ -21,7 +21,7 @@ public class Product {
 
     private String mota;
 
-    private int quantityProduct;
+    private Long quantityProduct;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 300)

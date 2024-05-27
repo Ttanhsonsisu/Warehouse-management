@@ -7,7 +7,7 @@ import net.miginfocom.swing.MigLayout;
 import org.example.controller.userController.LoginController;
 import org.example.model.entities.UserApp;
 import org.example.view.dashboart.application.Application;
-
+import org.example.view.dashboart.application.form.login.util.UserSession;
 
 
 import javax.swing.*;
@@ -16,7 +16,12 @@ import java.awt.*;
 public class Login extends JPanel {
 
     @Getter
-    private UserApp dataLogin;
+    private static UserApp dataLogin;
+
+    public static void setFulldataLogin(UserApp data) {
+        dataLogin = data;
+    }
+
     private final EntityManager em;
 
     public Login(EntityManager em) {
@@ -67,7 +72,14 @@ public class Login extends JPanel {
 
             System.out.print(userName + " " + password);
 
-            new LoginController(em).login(this);
+            LoginController controller = new LoginController(em);
+
+            UserApp dataUser = controller.login(this);
+
+            UserSession.setName(dataUser.getUserName());
+            UserSession.setIdUser(dataUser.getIdUser());
+            UserSession.setEmail(dataUser.getEmail());
+            UserSession.setRole(dataUser.getRole());
         });
 
         panel.add(lbTitle);

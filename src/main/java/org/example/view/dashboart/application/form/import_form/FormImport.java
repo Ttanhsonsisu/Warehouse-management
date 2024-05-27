@@ -1,21 +1,106 @@
 package org.example.view.dashboart.application.form.import_form;
 
-import com.formdev.flatlaf.FlatClientProperties;
-import org.example.view.dashboart.application.form.export.FrameChoseProduct;
+import jakarta.persistence.EntityManager;
+import lombok.Getter;
+import org.example.controller.SearchTableController;
+import org.example.controller.productController.ProductController;
+import org.example.model.entities.ImportNote;
+import org.example.model.entities.Product;
+import org.example.model.entities.UserApp;
+import org.example.model.entities.enums.UnitItem;
+import org.example.service.ServiceImportNote;
+import org.example.service.ServiceProduct;
+import org.example.service.ServiceUserApp;
+import org.example.view.dashboart.application.form.login.util.UserSession;
+import org.example.view.dashboart.application.form.product.ProductForm;
+import raven.toast.Notifications;
+
+import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class FormImport extends javax.swing.JPanel {
+    private boolean loadDataTbl = true;
 
     private boolean showFramNewProduct = false;
 
+    private final EntityManager em;
+
     private FrameNewProduct frameNewProduct;
-    public FormImport() {
+
+    private ProductController productController;
+
+    private ServiceUserApp serviceUserApp;
+
+    private ServiceProduct serviceProduct;
+
+    private ServiceImportNote serviceImportNote;
+
+    private SearchTableController searchTableController;
+    @Getter
+    private Product dataSelectTbl;
+
+    @Getter
+    private ArrayList<Long> price;
+
+    @Getter
+    private ImportNote dataInsertImportNote;
+
+    public FormImport(EntityManager em) {
+        this.em = em;
+
         initComponents();
+        init();
 //        lb.putClientProperty(FlatClientProperties.STYLE, ""
 //                + "font:$h1.font");
+        addDataTbl(tbl);
+    }
+
+    private void init() {
+        productController = new ProductController(em);
+        serviceProduct = new ServiceProduct(em);
+        serviceUserApp = new ServiceUserApp(em);
+        serviceImportNote = new ServiceImportNote(em);
+
+        price = new ArrayList<>();
+
 
     }
 
+    private void addDataTbl(JTable table) {
+       loadDataTbl = true;
+        productController.showDataTblImport(table);
+       loadDataTbl = false;
+       price.clear();
+    }
+
+    public void updataDataTbl() {
+        loadDataTbl = true;
+        DefaultTableModel model = (DefaultTableModel) tbl.getModel();
+        int rowCount = model.getRowCount();
+        for (int i = rowCount - 1; i >= 0; i--) {
+            model.removeRow(i);
+        }
+        addDataTbl(tbl);
+
+    }
+
+    private void resetTxtField() {
+        txtTotalPrice.setText("");
+        txtNote.setText("");
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
@@ -43,9 +128,19 @@ public class FormImport extends javax.swing.JPanel {
         crazyPanel5 = new org.example.view.crazypanel.CrazyPanel();
         txtSearch = new javax.swing.JTextField();
         cmdAdd = new javax.swing.JButton();
-        cmdDel = new javax.swing.JButton();
+        //cmdDel = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl = new javax.swing.JTable();
+// set conten for text
+        txtIdUser.setText(UserSession.getIdUser().toString());
+        txtNameUser.setText(UserSession.getName());
+
+        txtDate.setValue(LocalDate.now());
+
+        txtSearch.addActionListener(e -> {
+            searchTableController = new SearchTableController();
+            searchTableController.searchTable(tbl, txtSearch);
+        });
 
         crazyPanel1.setMigLayoutConstraints(new org.example.view.crazypanel.MigLayoutConstraints(
                 "wrap,fill,insets 15",
@@ -109,11 +204,7 @@ public class FormImport extends javax.swing.JPanel {
         jLabel3.setText("Tên");
         crazyPanel3.add(jLabel3);
 
-        txtNameUser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNameUserActionPerformed(evt);
-            }
-        });
+
         crazyPanel3.add(txtNameUser);
 
         jLabel4.setText("Thành tiền");
@@ -137,7 +228,11 @@ public class FormImport extends javax.swing.JPanel {
         cmdSave.setText("save");
         cmdSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdSaveActionPerformed(evt);
+                try {
+                    cmdSaveActionPerformed(evt);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         crazyPanel3.add(cmdSave);
@@ -177,27 +272,79 @@ public class FormImport extends javax.swing.JPanel {
                 cmdAddActionPerformed(evt);
             }
         });
-        cmdDel.setText("Xóa");
-        cmdDel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdDelActionPerformed(evt);
-            }
-        });
-        crazyPanel5.add(cmdDel);
+        //cmdDel.setText("Xóa");
+//        cmdDel.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                cmdDelActionPerformed(evt);
+//            }
+//        });
+        //crazyPanel5.add(cmdDel);
 
         crazyPanel4.add(crazyPanel5);
 
         tbl.setModel(new javax.swing.table.DefaultTableModel(
                 new Object [][] {
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null}
+
                 },
                 new String [] {
                         "mã", "Tên", "Đơn vị", "giá nhập", "Số lượng"
                 }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                    Integer.class, String.class, String.class, Long.class, Long.class
+            };
+            boolean[] canEdit = new boolean [] {
+                    false, false, false, false, true
+            };
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+
+
+        DefaultTableModel model = (DefaultTableModel) tbl.getModel();
+
+        model.addTableModelListener(new TableModelListener() {
+
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                if(!loadDataTbl) {
+
+                int row = e.getFirstRow();
+                int column = e.getColumn();
+
+                if(row >=0 && row < price.size()) {
+
+                        price.remove(row);
+
+                }
+
+                price.add(row, 0l);
+
+                if(column == 4) {
+                    long soLuong = (long) model.getValueAt(row, column);
+                    long giaNhap = (long) model.getValueAt(row, 3);
+                    long result = soLuong * giaNhap;
+                    System.out.println(result + " " + row + " " + price.size());
+                    price.set(row, result);
+
+                    long totalPrice = 0l;
+
+                    for (long i : price) {
+                        totalPrice += i;
+                    }
+
+                    txtTotalPrice.setText(String.valueOf(totalPrice));
+
+                }
+                }
+            }
+        });
+
         jScrollPane1.setViewportView(tbl);
 
         crazyPanel4.add(jScrollPane1);
@@ -216,34 +363,85 @@ public class FormImport extends javax.swing.JPanel {
         );
     }// </editor-fold>
 
-    private void txtNameUserActionPerformed(java.awt.event.ActionEvent evt) {
+//    private void jTable1MouseClicked(MouseEvent evt) {
+//        if(tbl.getSelectedRowCount() > 1 || tbl.getSelectedRowCount() < 1) {
+//            return;
+//        }
+//        DefaultTableModel model = (DefaultTableModel) tbl.getModel();
+//
+//        System.out.print(tbl.getSelectedRow());
+//// convert to index default table
+//        int viewRowIndex = tbl.getSelectedRow();
+//        int modelRowIndex = tbl.convertRowIndexToModel(viewRowIndex);
+//
+//        Integer idProduct = Integer.parseInt(model.getValueAt(modelRowIndex, 0).toString());
+//
+//
+//        dataSelectTbl = new Product();
+//        dataSelectTbl.setIdProduct(idProduct);
+//
+//        System.out.println(dataSelectTbl.toString());
+//    }
+
+
+
+    private void cmdSaveActionPerformed(java.awt.event.ActionEvent evt) throws ParseException {
         // TODO add your handling code here:
+        dataInsertImportNote = new ImportNote();
+        if(txtTotalPrice == null) {
+            Notifications.getInstance().show(Notifications.Type.WARNING , "chưa có dữ liệu");
+        } else {
+            int id = Integer.parseInt(txtIdUser.getText());
+            UserApp userApp = serviceUserApp.findUserAppById(id);
+            dataInsertImportNote.setSuppiers(userApp);
+            List<Product> products = new ArrayList<>();
+
+            DefaultTableModel model = (DefaultTableModel) tbl.getModel();
+            Product product = new Product();
+
+            for(int i=0; i<price.size(); i++) {
+               product = serviceProduct.findById((Integer) model.getValueAt(i,0));
+               products.add(product);
+           }
+            dataInsertImportNote.setProducts(products);
+            dataInsertImportNote.setTotalPrice(Long.parseLong(txtTotalPrice.getText()));
+            // change to date java
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = formatter.parse(txtDate.getText());
+            dataInsertImportNote.setDateTranSaction(date);
+            serviceImportNote.inserImportNote(dataInsertImportNote);
+            Product changeQuantityProduct = new Product();
+            for(int i = 0; i < price.size(); i++) {
+                changeQuantityProduct = serviceProduct.findById((Integer) model.getValueAt(i,0));
+                Long quantity = changeQuantityProduct.getQuantityProduct();
+                Long change = quantity + (Long)model.getValueAt(i , 4);
+
+                serviceProduct.updateQuantityProduct(changeQuantityProduct, change);
+            }
+            Notifications.getInstance().show(Notifications.Type.SUCCESS, "thêm thành công");
+
+        }
+
     }
 
-    private void cmdSaveActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
 
-    private void cmdDelActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
 
     private void cmdAddActionPerformed(java.awt.event.ActionEvent evt) {
-
+            ProductForm curent = new ProductForm(em);
         if(!showFramNewProduct) {
             showFramNewProduct = true;
-            frameNewProduct = new FrameNewProduct();
+            frameNewProduct = new FrameNewProduct(em, curent);
             frameNewProduct.setVisible(true);
 
         } else {
             frameNewProduct.dispose();
-            frameNewProduct = new FrameNewProduct();
+            frameNewProduct = new FrameNewProduct(em, curent);
             frameNewProduct.setVisible(true);
         }
     }
     // Variables declaration - do not modify
     private javax.swing.JButton cmdAdd;
-    private javax.swing.JButton cmdDel;
+    //private javax.swing.JButton cmdDel;
     private javax.swing.JButton cmdSave;
     private org.example.view.crazypanel.CrazyPanel crazyPanel1;
     private org.example.view.crazypanel.CrazyPanel crazyPanel2;

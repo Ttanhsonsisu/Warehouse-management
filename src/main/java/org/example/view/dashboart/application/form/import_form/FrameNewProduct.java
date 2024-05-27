@@ -1,18 +1,42 @@
 package org.example.view.dashboart.application.form.import_form;
 
+import jakarta.persistence.EntityManager;
+import org.example.controller.productController.ProductController;
+
+import org.example.controller.userController.UserInfoController;
+import org.example.model.entities.Product;
+
+import org.example.model.entities.enums.UnitItem;
 import org.example.view.crazypanel.CrazyPanel;
 import org.example.view.crazypanel.FlatLafStyleComponent;
 import org.example.view.crazypanel.MigLayoutConstraints;
+
+import org.example.view.dashboart.application.form.login.util.UserSession;
+import org.example.view.dashboart.application.form.product.ProductForm;
+import raven.toast.Notifications;
+
 
 import javax.swing.*;
 
 
 public class FrameNewProduct extends javax.swing.JFrame {
 
+    private final EntityManager em;
 
-    public FrameNewProduct() {
+    private Product dataInsertProduct;
+
+    private ProductController productController;
+
+    private UserInfoController userInfoController;
+
+    private ProductForm productForm;
+    public FrameNewProduct(EntityManager em, ProductForm productForm) {
+        this.em = em;
+        this.productForm = productForm;
         initComponents();
+
     }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
@@ -40,6 +64,15 @@ public class FrameNewProduct extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         cmdSave = new javax.swing.JButton();
         cmdExit = new javax.swing.JButton();
+
+        txtIdSupplier.setEditable(false);
+        txtNameSupplier.setEditable(false);
+        txtEmailSupplier.setEditable(false);
+// set values for JTextField
+        txtIdSupplier.setText(UserSession.getIdUser().toString());
+        txtNameSupplier.setText(UserSession.getName());
+        txtEmailSupplier.setText(UserSession.getEmail());
+
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -177,7 +210,7 @@ public class FrameNewProduct extends javax.swing.JFrame {
     }// </editor-fold>
 
     private void txtEmailSupplierActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+
     }
 
     private void cmbUnitActionPerformed(java.awt.event.ActionEvent evt) {
@@ -185,11 +218,42 @@ public class FrameNewProduct extends javax.swing.JFrame {
     }
 
     private void cmdSaveActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        try {
+            productController = new ProductController(em);
+            userInfoController = new UserInfoController(em);
+            dataInsertProduct = new Product();
+            dataInsertProduct.setNameProduct(txtNameProduct.getText());
+
+            String unitItem = (String) cmbUnit.getModel().getSelectedItem();
+            if (unitItem == "l") {
+                dataInsertProduct.setUnitProduct(UnitItem.l);
+            } else if (unitItem == "kg") {
+                dataInsertProduct.setUnitProduct(UnitItem.kg);
+            } else if (unitItem == "m") {
+                dataInsertProduct.setUnitProduct(UnitItem.m);
+            }
+
+            dataInsertProduct.setPrice(Long.parseLong(txtPrice.getText()));
+            dataInsertProduct.setMota(jTextArea1.getText());
+
+            productController.insertProduct(dataInsertProduct);
+            userInfoController.addProductInUserSession(dataInsertProduct);
+
+            Notifications.getInstance().show(Notifications.Type.SUCCESS, "Thêm thành công");
+        } catch(Exception e) {
+            Notifications.getInstance().show(Notifications.Type.ERROR, "lỗi không thêm được xin hãy sửa lại");
+            e.printStackTrace();
+        } finally {
+            productForm.updataDataTbl();
+            this.dispose();
+            System.out.print(dataInsertProduct.toString());
+        }
+
     }
 
     private void cmdExitActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        this.dispose();
+        Notifications.getInstance().show(Notifications.Type.WARNING , "Đã Thoát");
     }
 
     /**

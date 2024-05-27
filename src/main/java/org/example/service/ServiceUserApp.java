@@ -1,8 +1,12 @@
 package org.example.service;
 
+import com.sun.jna.platform.win32.Netapi32Util;
 import jakarta.persistence.EntityManager;
 import org.example.DAO.UserAppDAO;
+import org.example.model.entities.Product;
 import org.example.model.entities.UserApp;
+import org.example.view.dashboart.application.form.login.util.UserSession;
+
 import java.util.List;
 
 
@@ -15,6 +19,34 @@ public class ServiceUserApp {
         this.em = em;
     }
 
+    public UserApp findUserAppById(int id) {
+        em.getTransaction().begin();
+        UserApp result = em.find(UserApp.class, id);
+        em.getTransaction().commit();
+        return result;
+
+    }
+
+    public void inserProduct (Product product) {
+        em.getTransaction().begin();
+        UserApp userApp = em.find(UserApp.class, UserSession.getIdUser());
+        userApp.getProductList().add(product);
+        em.getTransaction().commit();
+    }
+    public UserApp findUserAppByEmail(String email) {
+
+        UserApp result = new UserApp();
+
+        try {
+            em.getTransaction().begin();
+            result = em.find(UserApp.class, email);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            em.getTransaction().commit();
+            return result;
+        }
+    }
     public List<UserApp> listUserApp(){
         em.getTransaction().begin();
         UserAppDAO dao = new UserAppDAO(em);
@@ -41,11 +73,14 @@ public class ServiceUserApp {
 
        } catch(Exception e) {
            e.printStackTrace();
+           return null;
        } finally {
            em.getTransaction().commit();
+            return r;
        }
-        return r;
+
     }
+
 
     public boolean checkDuplicateEmail(String email) {
         boolean checkDuplicate = false;

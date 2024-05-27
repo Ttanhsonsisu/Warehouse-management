@@ -18,10 +18,18 @@ public class TxtDate {
 
     public TxtDate(JFormattedTextField txtDate) {
         this.txtDate = txtDate;
-        init();
+        //betweenDateSelected();
     }
 
-    public void init() {
+    public void nowDay() {
+        DatePicker datePicker = new DatePicker();
+        datePicker.now();
+        datePicker.setEditor(this.getTxtDate());
+        this.txtDate.setValue(LocalDate.now());
+
+    }
+
+    public void betweenDateSelected() {
     DatePicker datePicker = new DatePicker();
         datePicker.setDateSelectionMode(DatePicker.DateSelectionMode.BETWEEN_DATE_SELECTED);
         datePicker.setSeparator(" dến ");
@@ -44,5 +52,6 @@ public class TxtDate {
         }
     });
         datePicker.setEditor(this.getTxtDate());
+
     }
 }

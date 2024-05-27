@@ -2,86 +2,83 @@ package org.example.view.dashboart.application.form.transaction_form;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import org.example.view.dashboart.application.form.transaction_form.ACTbl.TableActionCellEditor;
-import org.example.view.dashboart.application.form.transaction_form.ACTbl.TableActionCellRender;
-import org.example.view.dashboart.application.form.transaction_form.ACTbl.TableActionEvent;
-import org.example.view.dashboart.managerFrame.TxtDate;
+import jakarta.persistence.EntityManager;
+import org.example.controller.TransactionController;
 
+import org.example.view.dashboart.managerFrame.TxtDate;
+import raven.datetime.component.date.DateEvent;
+import raven.datetime.component.date.DatePicker;
+import raven.datetime.component.date.DateSelectionAble;
+import raven.datetime.component.date.DateSelectionListener;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
-import java.text.DecimalFormat;
-import java.util.Random;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 
 public class FormTransaction extends javax.swing.JPanel {
 
-    private TxtDate fieldTxtDate;
-
-    public FormTransaction() {
+    private final EntityManager em;
+    private TransactionController transactionController;
+    public FormTransaction(EntityManager em) {
+        this.em = em;
         initComponents();
         init();
+        transactionController = new TransactionController(em);
         applyTableStyle(tblTransaction);
-        testData(tblTransaction);
+        addDataTbl(tblTransaction);
                 lbTitle.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h1.font");
     }
 
-        private void testData(JTable table) {
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.addRow(getRandomRow("Beer"));
-        model.addRow(getRandomRow("Shirt"));
-        model.addRow(getRandomRow("Laptop"));
-        model.addRow(getRandomRow("Book"));
-        model.addRow(getRandomRow("Coffee"));
-        model.addRow(getRandomRow("Phone"));
-        model.addRow(getRandomRow("Chair"));
-        model.addRow(getRandomRow("Watch"));
-        model.addRow(getRandomRow("Sunglasses"));
-        model.addRow(getRandomRow("Bag"));
-        model.addRow(getRandomRow("Headphones"));
-        model.addRow(getRandomRow("Camera"));
-        model.addRow(getRandomRow("Necklace"));
-        model.addRow(getRandomRow("Perfume"));
-        model.addRow(getRandomRow("Wallet"));
-        model.addRow(getRandomRow("Jacket"));
-        model.addRow(getRandomRow("Bicycle"));
-        model.addRow(getRandomRow("Game console"));
-        model.addRow(getRandomRow("Tennis racket"));
-                model.addRow(getRandomRow("Beer"));
-        model.addRow(getRandomRow("Shirt"));
-        model.addRow(getRandomRow("Laptop"));
-        model.addRow(getRandomRow("Book"));
-        model.addRow(getRandomRow("Coffee"));
-        model.addRow(getRandomRow("Phone"));
-        model.addRow(getRandomRow("Chair"));
-        model.addRow(getRandomRow("Watch"));
-        model.addRow(getRandomRow("Sunglasses"));
-        model.addRow(getRandomRow("Bag"));
-        model.addRow(getRandomRow("Headphones"));
-        model.addRow(getRandomRow("Camera"));
-        model.addRow(getRandomRow("Necklace"));
-        model.addRow(getRandomRow("Perfume"));
-        model.addRow(getRandomRow("Wallet"));
-        model.addRow(getRandomRow("Jacket"));
-        model.addRow(getRandomRow("Bicycle"));
-        model.addRow(getRandomRow("Game console"));
-        model.addRow(getRandomRow("Tennis racket"));
+    private void init() {
+        //new TxtDate(txtDate).betweenDateSelected();
+        DatePicker datePicker = new DatePicker();
+        datePicker.setDateSelectionMode(DatePicker.DateSelectionMode.BETWEEN_DATE_SELECTED);
+        datePicker.setSeparator(" dến ");
+        datePicker.setUsePanelOption(true);
+        datePicker.setDateSelectionAble(new DateSelectionAble() {
+            @Override
+            public boolean isDateSelectedAble(LocalDate localDate) {
+                return !localDate.isAfter(LocalDate.now());
+            }
+        });
+
+        datePicker.addDateSelectionListener(new DateSelectionListener() {
+            @Override
+            public void dateSelected(DateEvent dateEvent) {
+                LocalDate dates[] = datePicker.getSelectedDateRange();
+                DateTimeFormatter df = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                if(dates != null){
+                    Date dateStart = Date.from(dates[0].atStartOfDay(ZoneId.systemDefault()).toInstant());
+                    Date dateEnd = Date.from(dates[1].atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+                    updateDataTbl(dateStart , dateEnd);
+                    //System.out.println(df.format(dates[0]) + " " + df.format(dates[1]));
+                }
+            }
+        });
+        datePicker.setEditor(txtDate);
     }
-        
-    private Object[] getRandomRow(String name) {
-        DecimalFormat df = new DecimalFormat("#,##0.##");
-        return new Object[]{true, name, "$" + df.format(getAmount(9999, 9999999)), "$" + df.format(getAmount(9999, 9999999)), df.format(getAmount(-100, 100))};
+
+    private void addDataTbl(JTable table) {
+        transactionController.showDataTblTransaction(table);
     }
-    
-       private double getAmount(int from, int to) {
-        Random ran = new Random();
-        return (ran.nextInt(to - from) + from) * ran.nextDouble();
+
+    private void updateDataTbl(Date startDate, Date endDate) {
+        DefaultTableModel model = (DefaultTableModel) tblTransaction.getModel();
+        int rowCount = model.getRowCount();
+        for (int i = rowCount - 1; i >= 0; i--) {
+            model.removeRow(i);
+        }
+        transactionController.showDataBetweenData(tblTransaction,startDate, endDate );
     }
-       
      private void applyTableStyle(JTable table) {
          
          cmdRefresh.setIcon(new FlatSVGIcon("icon/svg/edit.svg", 0.35f));
@@ -114,51 +111,19 @@ public class FormTransaction extends javax.swing.JPanel {
                     JLabel label = (JLabel) com;
                     if (column == 0 || column == 4) {
                         label.setHorizontalAlignment(SwingConstants.CENTER);
-                    } else if (column == 2 || column == 3) {
+                    }else if(column == 1){
+                        label.setHorizontalAlignment(SwingConstants.RIGHT);
+                    }
+                    else if (column == 2 || column == 3) {
                         label.setHorizontalAlignment(SwingConstants.TRAILING);
                     } else {
                         label.setHorizontalAlignment(SwingConstants.LEADING);
                     }
-                    // 
-//                    if (header == false) {
-//                        if (column == 4) {
-//                            if (Double.parseDouble(value.toString()) > 0) {
-//                                com.setForeground(new Color(17, 182, 60));
-//                                label.setText("+" + value);
-//                            } else {
-//                                com.setForeground(new Color(202, 48, 48));
-//                            }
-//                        } else {
-//                            if (isSelected) {
-//                                com.setForeground(table.getSelectionForeground());
-//                            } else {
-//                                com.setForeground(table.getForeground());
-//                            }
-//                        }
-//                    }
+
                 }
                 return com;
             }
         };
-    }
-
-    private void init() {
-
-        //action row table
-        TableActionEvent event = new TableActionEvent() {
-            @Override
-            public void onView(int row) {
-                System.out.println("show" + row);
-            }
-        };
-        tblTransaction.getColumnModel().getColumn(7).setCellRenderer(new TableActionCellRender());
-        tblTransaction.getColumnModel().getColumn(7).setCellEditor(new TableActionCellEditor(event));
-
-        // set up date picker
-
-        fieldTxtDate = new TxtDate(txtDate);
-
-
     }
 
     @SuppressWarnings("unchecked")
@@ -237,14 +202,14 @@ public class FormTransaction extends javax.swing.JPanel {
 
             },
             new String [] {
-                "mã", "Ngày", "Số Lượng", "Đơn vị", "Tổng giá", "Khách hàng", "Loại GD", "AC"
+                "mã", "Ngày",  "Tổng giá", "Người thực hiện", "Loại GD"
             }
         ) {
             Class[] types = new Class [] {
-                Integer.class, String.class, Integer.class, String.class, Integer.class, String.class, String.class, Object.class
+                Integer.class, String.class,   Long.class, String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, true
+                false, false,  false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -256,15 +221,7 @@ public class FormTransaction extends javax.swing.JPanel {
             }
         });
         tblTransaction.setRowHeight(40);
-        tblTransaction.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                tblImportNoteAncestorAdded(evt);
-            }
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-            }
-            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-            }
-        });
+
         tblTransaction.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblImportNoteMouseClicked(evt);
@@ -278,7 +235,7 @@ public class FormTransaction extends javax.swing.JPanel {
             tblTransaction.getColumnModel().getColumn(2).setResizable(false);
             tblTransaction.getColumnModel().getColumn(3).setResizable(false);
             tblTransaction.getColumnModel().getColumn(4).setResizable(false);
-            tblTransaction.getColumnModel().getColumn(5).setResizable(false);
+
         }
 
         crazyPanel1.add(jScrollPane1);
@@ -296,38 +253,21 @@ public class FormTransaction extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmdRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdRefreshActionPerformed
-        
-//
-//        if(!showFrameUpdate) {
-//            showFrameUpdate = true;
-//            updateUserFrame = new UpdateUser();
-//            updateUserFrame.setVisible(true);
-//
-//        } else {
-//        updateUserFrame.dispose();
-//        updateUserFrame = new UpdateUser();
-//        updateUserFrame.setVisible(true);
-//        }
+        DefaultTableModel model = (DefaultTableModel) tblTransaction.getModel();
+        int rowCount = model.getRowCount();
+        for (int i = rowCount - 1; i >= 0; i--) {
+            model.removeRow(i);
+        }
+        addDataTbl(tblTransaction);
+
     }//GEN-LAST:event_cmdRefreshActionPerformed
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSearchActionPerformed
 
-    private void tblImportNoteAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tblImportNoteAncestorAdded
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tblImportNoteAncestorAdded
-
     private void cmdExportToActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdExportToActionPerformed
-        DefaultTableModel model = (DefaultTableModel) tblTransaction.getModel();
-       
-        if(tblTransaction.getSelectedRowCount()== 1) {
-            model.removeRow(tblTransaction.getSelectedRow());
-        } else {
-            if(tblTransaction.getSelectedRow()== 0)
-                System.out.print("hdhd");
-        }
-        
+
     }//GEN-LAST:event_cmdExportToActionPerformed
 
     private void tblImportNoteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblImportNoteMouseClicked

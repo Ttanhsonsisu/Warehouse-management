@@ -1,5 +1,6 @@
 package org.example.controller.productController;
 
+import com.sun.jna.platform.win32.Netapi32Util;
 import jakarta.persistence.EntityManager;
 import org.example.controller.userController.UserInfoController;
 import org.example.model.entities.Product;
@@ -48,6 +49,29 @@ public class ProductController {
 
         TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(model);
         table.setRowSorter(rowSorter);
+    }
+
+    public Product findProductById(int id) {
+        return serviceProduct.findById(id);
+    }
+    public void updateProductInFrame(int id, Product newDateUpdate) {
+        serviceProduct.updateProduct(id, newDateUpdate);
+    }
+    public void showDataSuplierTbl(JTable table, int idProduct) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        Product product = serviceProduct.findById(idProduct);
+        List<UserApp> dataAdd = product.getSupplier();
+        if(dataAdd.size() > 0 || !dataAdd.isEmpty()) {
+            for(UserApp userApp : dataAdd) {
+                model.addRow(new Object[] {
+                        userApp.getIdUser(),
+                        userApp.getName(),
+                        userApp.getUserName(),
+                        userApp.getPhoneNumber()
+                });
+            }
+        }
+
     }
 
     public void showDataTblImport(JTable table) {

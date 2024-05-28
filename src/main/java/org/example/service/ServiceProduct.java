@@ -49,6 +49,19 @@ public class ServiceProduct {
         }
     }
 
+    public void updateProduct(int id, Product updateProduct) {
+        try {
+            em.getTransaction().begin();
+            Product product = em.find(Product.class, id);
+            product = updateProduct;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            em.getTransaction().commit();
+        }
+
+    }
     public boolean delProduct(Product product) {
         boolean success = true;
         try {

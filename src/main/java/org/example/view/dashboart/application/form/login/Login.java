@@ -54,8 +54,8 @@ public class Login extends JPanel {
         txtUsername.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter your username or email");
         txtPassword.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter your password");
 
-        JLabel lbTitle = new JLabel("Welcome back!");
-        JLabel description = new JLabel("Please sign in to access your account");
+        JLabel lbTitle = new JLabel("Ứng dụng quản lí kho hàng");
+        JLabel description = new JLabel("Vui lòng đăng nhập");
         lbTitle.putClientProperty(FlatClientProperties.STYLE, "" +
                 "font:bold +10");
         description.putClientProperty(FlatClientProperties.STYLE, "" +
@@ -108,7 +108,7 @@ public class Login extends JPanel {
             Application.changeFormLoginRegister("register");
 
             });
-        JLabel label = new JLabel("Don't have an account ?");
+        JLabel label = new JLabel("chưa có tài khoản");
         label.putClientProperty(FlatClientProperties.STYLE, "" +
                 "[light]foreground:lighten(@foreground,30%);" +
                 "[dark]foreground:darken(@foreground,30%)");

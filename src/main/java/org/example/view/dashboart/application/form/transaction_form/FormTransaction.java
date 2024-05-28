@@ -3,9 +3,11 @@ package org.example.view.dashboart.application.form.transaction_form;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import jakarta.persistence.EntityManager;
+
+import org.example.controller.SearchTableController;
 import org.example.controller.TransactionController;
 
-import org.example.view.dashboart.managerFrame.TxtDate;
+
 import raven.datetime.component.date.DateEvent;
 import raven.datetime.component.date.DatePicker;
 import raven.datetime.component.date.DateSelectionAble;
@@ -16,6 +18,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -263,10 +267,13 @@ public class FormTransaction extends javax.swing.JPanel {
     }//GEN-LAST:event_cmdRefreshActionPerformed
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
-        // TODO add your handling code here:
+        SearchTableController searchTableController = new SearchTableController();
+        searchTableController.searchTable(tblTransaction, txtSearch);
     }//GEN-LAST:event_txtSearchActionPerformed
 
+
     private void cmdExportToActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdExportToActionPerformed
+
 
     }//GEN-LAST:event_cmdExportToActionPerformed
 

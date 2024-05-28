@@ -120,6 +120,16 @@
             <scope>system</scope>
             <systemPath>${basedir}/library/swing-glasspane-popup-1.5.0.jar</systemPath>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>5.2.5</version>
+        </dependency>
+
+        
+
     </dependencies>
 
 </project>

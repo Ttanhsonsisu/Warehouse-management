@@ -32,7 +32,7 @@ public class Menu extends JPanel {
             {"~THÔNG TIN HÀNG HÓA~"},
             {"Hàng hóa"},
             {"~HÓA ĐƠN~"},
-            {"TẠO NHẬP&XUẤT","Phiếu nhập" , "Phếu xuất"},
+            {"TẠO NHẬP&XUẤT","Phiếu xuất" , "Phếu nhập"},
             {"Phiên giao dịch"},
         {"Logout"}
     };

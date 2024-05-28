@@ -29,8 +29,6 @@ public class UserApp {
 
     protected String password;
 
-    protected String verifyCode;
-
     protected String name;
 
     @ManyToMany()
@@ -44,12 +42,12 @@ public class UserApp {
     @Enumerated(EnumType.STRING)
     protected UserRole role;
 
-    public UserApp(Integer idUser, String email, String userName, String password, String verifyCode) {
+    public UserApp(Integer idUser, String email, String userName, String password) {
         this.idUser = idUser;
         this.email = email;
         this.userName = userName;
         this.password = password;
-        this.verifyCode = verifyCode;
+
     }
 
     public UserApp( String email, String password, String role, String name, String phoneNumber) {

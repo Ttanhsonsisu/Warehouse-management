@@ -4,6 +4,7 @@ package org.example.view.dashboart.application.form.export;
 import com.formdev.flatlaf.FlatClientProperties;
 import jakarta.persistence.EntityManager;
 import lombok.Getter;
+import org.example.controller.SearchTableController;
 import org.example.model.entities.ExportNote;
 import org.example.model.entities.ImportNote;
 import org.example.model.entities.Product;
@@ -172,6 +173,10 @@ public class FormExport extends javax.swing.JPanel {
         txtNameUser.setText(UserSession.getName());
         txtDate.setValue(LocalDate.now());
         ////////////////////
+        txtDate.setEnabled(false);
+        txtIdUser.setEditable(false);
+        txtNameUser.setEditable(false);
+
         crazyPanel1.setMigLayoutConstraints(new org.example.view.crazypanel.MigLayoutConstraints(
                 "wrap,fill,insets 15",
                 "[fill][fill]",
@@ -307,6 +312,10 @@ public class FormExport extends javax.swing.JPanel {
                         ""
                 }
         ));
+        txtSearch.addActionListener(e->{
+            SearchTableController searchTableController = new SearchTableController();
+            searchTableController.searchTable(tbl, txtSearch);
+        });
         crazyPanel5.add(txtSearch);
 
         cmdAddProduct.setText("Thêm SP");
@@ -410,16 +419,6 @@ public class FormExport extends javax.swing.JPanel {
         System.out.println(dataSelectTbl.toString());
     }
 
-    private void cmdDelAcctionPerformed(ActionEvent e) {
-        loadDataTbl= false;
-        DefaultTableModel model = (DefaultTableModel) tbl.getModel();
-        int row = tbl.getSelectedRow();
-
-        model.removeRow(row);
-
-
-
-    }
 
     private void txtNameUserActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:

@@ -97,6 +97,10 @@ public class FrameChoseProduct extends javax.swing.JFrame {
                         ""
                 }
         ));
+        txtSearch.addActionListener(e-> {
+            searchTableController = new SearchTableController();
+            searchTableController.searchTable(tblProduct1, txtSearch);
+        });
         crazyPanel2.add(txtSearch);
 
         cmdAdd.setText("Thêm");

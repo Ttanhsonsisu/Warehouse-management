@@ -39,7 +39,7 @@ public class ProductForm extends javax.swing.JPanel {
 
     private boolean showFramNewProduct = false;
 
-
+    private FrameUpdateProduct frameUpdateProduct;
 
     private FrameNewProduct frameNewProduct;
 
@@ -291,17 +291,16 @@ public class ProductForm extends javax.swing.JPanel {
 
     private void cmdUpdateActionPerformed(java.awt.event.ActionEvent evt) {
 
-//
-//        if(!showFrameUpdate) {
-//            showFrameUpdate = true;
-//            updateUserFrame = new UpdateUser();
-//            updateUserFrame.setVisible(true);
-//
-//        } else {
-//            updateUserFrame.dispose();
-//            updateUserFrame = new UpdateUser();
-//            updateUserFrame.setVisible(true);
-//        }
+        if(!showFrameUpdate) {
+            showFrameUpdate = true;
+            frameUpdateProduct = new FrameUpdateProduct(em , this);
+            frameUpdateProduct.setVisible(true);
+
+        } else {
+            frameUpdateProduct.dispose();
+            frameUpdateProduct = new FrameUpdateProduct(em , this);
+            frameUpdateProduct.setVisible(true);
+        }
     }
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {

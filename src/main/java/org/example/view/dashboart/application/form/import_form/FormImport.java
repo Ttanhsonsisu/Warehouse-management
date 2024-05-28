@@ -142,6 +142,10 @@ public class FormImport extends javax.swing.JPanel {
             searchTableController.searchTable(tbl, txtSearch);
         });
 
+        txtDate.setEnabled(false);
+        txtIdUser.setEditable(false);
+        txtNameUser.setEditable(false);
+
         crazyPanel1.setMigLayoutConstraints(new org.example.view.crazypanel.MigLayoutConstraints(
                 "wrap,fill,insets 15",
                 "[fill][fill]",
@@ -315,16 +319,13 @@ public class FormImport extends javax.swing.JPanel {
                 if(!loadDataTbl) {
 
                 int row = e.getFirstRow();
+                row= tbl.convertRowIndexToModel(row);
                 int column = e.getColumn();
 
                 if(row >=0 && row < price.size()) {
-
                         price.remove(row);
-
                 }
-
                 price.add(row, 0l);
-
                 if(column == 4) {
                     long soLuong = (long) model.getValueAt(row, column);
                     long giaNhap = (long) model.getValueAt(row, 3);

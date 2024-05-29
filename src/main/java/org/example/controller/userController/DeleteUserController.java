@@ -11,8 +11,7 @@ public class DeleteUserController {
 
     public DeleteUserController(EntityManager em) {
         this.em = em;
-        serviceUserApp= new ServiceUserApp(em);
-
+        serviceUserApp = new ServiceUserApp(em);
     }
 
     public void deleteUser(UserApp dataDel) {

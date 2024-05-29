@@ -18,7 +18,6 @@ import java.util.Date;
 @Setter
 public abstract class ProductTransactionAbstract {
 
-
     protected Date dateTranSaction;
 
 

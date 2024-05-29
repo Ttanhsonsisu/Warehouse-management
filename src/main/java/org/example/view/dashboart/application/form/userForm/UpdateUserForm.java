@@ -1,11 +1,10 @@
-package org.example.view.dashboart.application.form;
+package org.example.view.dashboart.application.form.userForm;
 
 import jakarta.persistence.EntityManager;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.controller.userController.UpdateUserController;
 import org.example.model.entities.UserApp;
-import org.example.view.dashboart.application.form.other.UserInfo;
 import raven.toast.Notifications;
 
 import java.awt.event.ActionEvent;

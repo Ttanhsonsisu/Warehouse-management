@@ -10,6 +10,7 @@ import org.example.view.dashboart.application.form.import_form.FormImport;
 import org.example.view.dashboart.application.form.product.ProductForm;
 import org.example.view.dashboart.application.form.transaction_form.FormTransaction;
 import org.example.view.dashboart.application.form.other.*;
+import org.example.view.dashboart.application.form.userForm.UserInfo;
 import org.example.view.dashboart.menu.Menu;
 import org.example.view.dashboart.menu.MenuAction;
 

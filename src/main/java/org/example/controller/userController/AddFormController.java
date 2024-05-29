@@ -3,7 +3,7 @@ package org.example.controller.userController;
 import jakarta.persistence.EntityManager;
 import org.example.model.entities.UserApp;
 import org.example.service.ServiceUserApp;
-import org.example.view.dashboart.application.form.AddUser;
+import org.example.view.dashboart.application.form.userForm.AddUser;
 import raven.toast.Notifications;
 
 public class AddFormController {

@@ -4,8 +4,6 @@ import jakarta.persistence.EntityManager;
 import org.example.model.entities.Product;
 import org.example.model.entities.UserApp;
 import org.example.service.ServiceUserApp;
-import org.example.view.dashboart.application.form.login.util.UserSession;
-import org.example.view.dashboart.application.form.other.UserInfo;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

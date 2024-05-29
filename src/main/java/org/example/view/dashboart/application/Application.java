@@ -37,8 +37,6 @@ public class Application extends javax.swing.JFrame {
 
     private final Register registerForm;
 
-
-
     public Application(EntityManager em) {
         //this.em = em;
         FlatRobotoFont.install();

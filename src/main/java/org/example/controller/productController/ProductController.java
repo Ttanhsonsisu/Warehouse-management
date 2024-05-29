@@ -1,14 +1,11 @@
 package org.example.controller.productController;
 
-import com.sun.jna.platform.win32.Netapi32Util;
 import jakarta.persistence.EntityManager;
-import org.example.controller.userController.UserInfoController;
 import org.example.model.entities.Product;
 import org.example.model.entities.UserApp;
 import org.example.service.ServiceProduct;
 import org.example.service.ServiceUserApp;
 import org.example.view.dashboart.application.form.login.util.UserSession;
-import org.example.view.dashboart.application.form.other.UserInfo;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -124,8 +121,8 @@ public class ProductController {
         serviceProduct.inserProduct(product);
     }
 
-    public void updataProduct(Product product, Long quantity) {
-        serviceProduct.updateQuantityProduct(product, quantity);
-
-    }
+//    public void updataProduct(Product product, Long quantity) {
+//        serviceProduct.updateQuantityProduct(product, quantity);
+//
+//    }
 }

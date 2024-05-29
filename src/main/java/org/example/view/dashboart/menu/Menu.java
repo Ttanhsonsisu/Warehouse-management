@@ -26,7 +26,7 @@ public class Menu extends JPanel {
 
     private final String menuItems[][] = {
             {"~TRANG CHỦ~"},
-            {"Dashboard"},
+            {"Giớ thiệu về sản phẩm"},
             {"~THÔNG TIN NGƯỜI DÙNG~"},
             {"Người dùng"},
             {"~THÔNG TIN HÀNG HÓA~"},
@@ -61,7 +61,7 @@ public class Menu extends JPanel {
 
     private final List<MenuEvent> events = new ArrayList<>();
     private boolean menuFull = true;
-    private final String headerName = "Test12";
+    private final String headerName = "Nhom 12";
 
     protected final boolean hideMenuTitleOnMinimum = true;
     protected final int menuTitleLeftInset = 5;

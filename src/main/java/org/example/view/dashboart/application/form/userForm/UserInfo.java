@@ -1,4 +1,4 @@
-package org.example.view.dashboart.application.form.other;
+package org.example.view.dashboart.application.form.userForm;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -8,8 +8,6 @@ import org.example.controller.userController.DeleteUserController;
 import org.example.controller.SearchTableController;
 import org.example.controller.userController.UserInfoController;
 import org.example.model.entities.UserApp;
-import org.example.view.dashboart.application.form.AddUser;
-import org.example.view.dashboart.application.form.UpdateUserForm;
 
 import raven.toast.Notifications;
 

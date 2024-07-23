@@ -15,13 +15,12 @@ public class UserInfoController {
 
     private final EntityManager em;
 
-
     private ServiceUserApp serviceUserApp;
+
     public UserInfoController(EntityManager em) {
         this.em = em;
         serviceUserApp = new ServiceUserApp(em);
     }
-
 
     public void ShowDataTbl(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();

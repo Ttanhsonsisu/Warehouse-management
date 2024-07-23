@@ -4,5 +4,4 @@ package org.example.model.entities.enums;
 public enum ItemCondition {
     OUT_OF_STOCK,
     LITTLE_ITEM,
-
 }

@@ -4,10 +4,7 @@ import javax.swing.*;
 import java.io.Serializable;
 import java.util.StringJoiner;
 
-/**
- *
- * @author Raven
- */
+
 public class FlatLafStyleComponent implements Serializable {
 
     public String getOwnStyle() {

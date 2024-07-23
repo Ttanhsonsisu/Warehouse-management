@@ -2,10 +2,6 @@ package org.example.view.crazypanel;
 
 import java.io.Serializable;
 
-/**
- *
- * @author Raven
- */
 public class MigLayoutConstraints implements Serializable {
 
     public String getLayoutConstraints() {

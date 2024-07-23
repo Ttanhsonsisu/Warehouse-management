@@ -2,7 +2,6 @@ package org.example.view.crazypanel;
 
 import javax.swing.*;
 
-
 public class CrazyPanel extends JPanel {
 
     public FlatLafStyleComponent getFlatLafStyleComponent() {

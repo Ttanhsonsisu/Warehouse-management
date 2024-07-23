@@ -7,7 +7,6 @@ import org.example.model.entities.UserApp;
 import org.example.model.entities.enums.UserRole;
 
 
-
 public class UserSession {
 
     private static Integer idUser;

@@ -73,6 +73,7 @@ public class TransactionController {
                 );
             }
         }
+
         if(!dataImport.isEmpty()) {
             for(ImportNote transaction : dataImport) {
                 model.addRow(new Object[] {
@@ -85,7 +86,6 @@ public class TransactionController {
                 );
             }
         }
-
     }
 
     public void showDataBetweenData(JTable table , Date begin , Date end) {

@@ -17,6 +17,5 @@ public class DeleteUserController {
     public void deleteUser(UserApp dataDel) {
 
         serviceUserApp.delUserApp(dataDel);
-
     }
 }

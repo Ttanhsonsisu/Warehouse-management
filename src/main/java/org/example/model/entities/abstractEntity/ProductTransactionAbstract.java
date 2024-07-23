@@ -1,6 +1,5 @@
 package org.example.model.entities.abstractEntity;
 
-
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.MappedSuperclass;
@@ -19,7 +18,6 @@ import java.util.Date;
 public abstract class ProductTransactionAbstract {
 
     protected Date dateTranSaction;
-
 
     @Enumerated(EnumType.STRING)
     protected TransactionType transactionType;

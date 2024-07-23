@@ -13,15 +13,6 @@ public class SearchTableController {
         TableRowSorter<TableModel> rowSorter = new TableRowSorter<TableModel>(model);
         jTable.setRowSorter(rowSorter);
 
-//        JPanel panel = new JPanel(new BorderLayout());
-//        panel.add(new JLabel("Specify a word to match:"),
-//                BorderLayout.WEST);
-//        panel.add(jtfFilter, BorderLayout.CENTER);
-//
-//        setLayout(new BorderLayout());
-//        add(panel, BorderLayout.SOUTH);
-//        add(new JScrollPane(jTable), BorderLayout.CENTER);
-
         jTextField.getDocument().addDocumentListener(new DocumentListener(){
 
             @Override
@@ -50,10 +41,6 @@ public class SearchTableController {
             public void changedUpdate(DocumentEvent e) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
-
         });
-
-
     }
-
 }

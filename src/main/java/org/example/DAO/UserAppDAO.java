@@ -1,6 +1,5 @@
 package org.example.DAO;
 
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;

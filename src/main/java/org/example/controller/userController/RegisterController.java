@@ -35,5 +35,4 @@ public class RegisterController {
             e.printStackTrace();
         }
     }
-
 }

@@ -12,8 +12,7 @@ import raven.toast.Notifications;
 public class LoginController {
 
     private static UserApp dataLogin;
-
-
+    
     private final EntityManager em;
 
     private Application app;
